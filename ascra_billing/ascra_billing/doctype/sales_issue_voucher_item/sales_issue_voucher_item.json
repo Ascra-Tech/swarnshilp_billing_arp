@@ -1,0 +1,119 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-04 13:27:49.226417",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "department_name",
+  "category",
+  "pieces",
+  "net_wt",
+  "column_break_ofdu",
+  "melting",
+  "wastage",
+  "fine",
+  "other_charges",
+  "remark"
+ ],
+ "fields": [
+  {
+   "columns": 1,
+   "fieldname": "department_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Department",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Item",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "pieces",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "PCS",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "net_wt",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Net Wt",
+   "width": "1"
+  },
+  {
+   "fieldname": "column_break_ofdu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "fieldname": "melting",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Purity",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "wastage",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Wastage",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "fine",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Fine",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "other_charges",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "OC",
+   "width": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "remark",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Remark",
+   "width": "1"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-06-14 02:18:54.696733",
+ "modified_by": "Administrator",
+ "module": "Ascra Billing",
+ "name": "Sales Issue Voucher Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
