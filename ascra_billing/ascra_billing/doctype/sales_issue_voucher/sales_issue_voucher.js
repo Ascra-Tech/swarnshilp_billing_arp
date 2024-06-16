@@ -8,8 +8,6 @@ frappe.ui.form.on('Sales Issue Voucher', {
 
         if(frm.doc.docstatus == 1){
             addSIButton(frm);
-            // frm.page.actions.find('[data-label="Edit"],[data-label="Approve"]').parent().parent().remove()
-            // frm.page.actions.find('[data-label="Edit"],[data-label="Reject"]').parent().parent().remove()
         }
         else{
             // addActionButton(frm);
@@ -37,6 +35,16 @@ function setQueryFilter(frm){
                  },
              };
          });
+
+         frm.set_query("shipping_to_address", function() {
+            return {
+                filters: {
+                        name: ["in", address],
+                },
+            };
+        });
+
+
          }
      });
 }

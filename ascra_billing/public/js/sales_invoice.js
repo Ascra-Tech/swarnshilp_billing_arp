@@ -11,6 +11,16 @@ frappe.ui.form.on('Sales Invoice', {
                     },
 			};
 		});
+
+        frm.set_query("custom_item", "items", function (doc, cdt, cdn) {
+			let d = locals[cdt][cdn];
+			return {
+				filters: {
+                        custom_department: d.custom_department
+                    },
+			};
+		});
+
 	},
 	
 })
@@ -28,8 +38,6 @@ frappe.ui.form.on('Sales Invoice Item', {
                      item_code: row.custom_item
                  },
                  callback: (r)=> {
-                    console.log(r.message)
-                    console.log(r.message.cost_center)
                     row.uom = r.message.stock_uom
                     row.income_account = r.message.income_account
                     row.item_name = r.message.item_name
@@ -37,10 +45,6 @@ frappe.ui.form.on('Sales Invoice Item', {
                     refresh_field("items")
                  }
              });
-
-            
-            // console.log(frm.doc.custom_gold_rate)
-            // row.preventDefault();
             refresh_field("items")
 		}
 	},

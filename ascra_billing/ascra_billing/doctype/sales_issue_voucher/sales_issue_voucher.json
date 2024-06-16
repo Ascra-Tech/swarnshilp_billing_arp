@@ -75,6 +75,8 @@
   "amount_without_gst",
   "column_break_cytu",
   "billing_gold_rate",
+  "column_break_oial",
+  "gold_rate_with_gst",
   "section_break_oxoz",
   "payload",
   "amended_from"
@@ -340,6 +342,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "sub_account",
    "fieldtype": "Link",
    "label": "Sub Account",
@@ -378,6 +381,7 @@
   {
    "fieldname": "payload",
    "fieldtype": "JSON",
+   "hidden": 1,
    "label": "Payload"
   },
   {
@@ -434,16 +438,26 @@
    "label": "Gold Rate"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "shipping_to_address",
    "fieldtype": "Link",
    "label": "Shipping To Address",
    "options": "Address"
+  },
+  {
+   "fieldname": "column_break_oial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gold_rate_with_gst",
+   "fieldtype": "Float",
+   "label": "Gold Rate With GST"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-16 13:05:35.582685",
+ "modified": "2024-06-17 00:13:46.903857",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",
