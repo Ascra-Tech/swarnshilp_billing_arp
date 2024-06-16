@@ -23,6 +23,7 @@
   "net_bill_amt",
   "total_amt",
   "id",
+  "customer",
   "column_break_pzyi",
   "gold_rate",
   "logistic_extra_charge",
@@ -60,11 +61,20 @@
   "voucher_billing_dept_cat_type",
   "column_break_tgyh",
   "sub_account",
+  "shipping_to_address",
   "column_break_yuue",
   "godown_bill",
   "display_making_charges",
   "column_break_vsot",
   "billing_status",
+  "billing_calculation_section",
+  "total_fine_amount",
+  "column_break_mtaj",
+  "amount_tcs_tds",
+  "column_break_qxmk",
+  "amount_without_gst",
+  "column_break_cytu",
+  "billing_gold_rate",
   "section_break_oxoz",
   "payload",
   "amended_from"
@@ -379,12 +389,61 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "billing_calculation_section",
+   "fieldtype": "Section Break",
+   "label": "Billing Calculation"
+  },
+  {
+   "fieldname": "total_fine_amount",
+   "fieldtype": "Float",
+   "label": "Total Fine Amount"
+  },
+  {
+   "fieldname": "column_break_mtaj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount_tcs_tds",
+   "fieldtype": "Float",
+   "label": "Amount TCS TDS"
+  },
+  {
+   "fieldname": "column_break_qxmk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount_without_gst",
+   "fieldtype": "Float",
+   "label": "Amount Without GST"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_cytu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_gold_rate",
+   "fieldtype": "Float",
+   "label": "Gold Rate"
+  },
+  {
+   "fieldname": "shipping_to_address",
+   "fieldtype": "Link",
+   "label": "Shipping To Address",
+   "options": "Address"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-14 02:22:56.646456",
+ "modified": "2024-06-16 13:05:35.582685",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class ABDepartment(Document):
+class ItemDepartment(Document):
 	pass
