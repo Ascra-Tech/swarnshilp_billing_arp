@@ -6,79 +6,115 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "section_break_mpio",
   "date",
-  "column_break_hhnr",
+  "column_break_znhx",
   "account_name",
-  "column_break_ltmx",
+  "column_break_xddz",
   "gst_name",
-  "column_break_hlmf",
+  "column_break_pylf",
   "notes",
-  "section_break_ugvn",
+  "section_break_klcu",
   "item_details",
-  "section_break_jgdw",
+  "section_break_uixh",
   "gold_weight",
   "logistic_per_gram_charge",
   "fine_amount",
   "net_bill_amt",
   "total_amt",
   "id",
-  "column_break_kewz",
+  "customer",
+  "column_break_pzyi",
   "gold_rate",
-  "extra_charge",
+  "logistic_extra_charge",
   "gst_amount",
   "tax_type_billing",
   "discount_amount",
-  "column_break_jzfl",
+  "column_break_azpw",
   "gold_purity",
   "total_hallmark_charge",
   "tcs_amount",
   "gold_rate_billing",
-  "column_break_egrp",
+  "tds_amount",
+  "column_break_qhtc",
   "gst_percentage",
   "total_hm_pieces",
   "logistic_amount",
   "tax_type_accounting_to_billing",
   "internal_narration",
-  "column_break_dnng",
+  "column_break_nqcv",
   "select_tax_type",
-  "logistic_account",
+  "logistic_account_name",
   "total_other_charge",
-  "tds_amount",
   "created_at",
   "updated_at",
-  "column_break_pwhv",
+  "column_break_ysem",
   "tcs_calculate_option",
+  "tds_percentage",
   "purc_sale_type",
   "hallmark_amount",
-  "section_break_hads",
-  "payload"
+  "account_code",
+  "section_break_eorj",
+  "billing_notes",
+  "generate_bill_type",
+  "column_break_rlqz",
+  "voucher_billing_dept_cat_type",
+  "column_break_tgyh",
+  "sub_account",
+  "shipping_to_address",
+  "column_break_yuue",
+  "godown_bill",
+  "display_making_charges",
+  "column_break_vsot",
+  "billing_status",
+  "billing_calculation_section",
+  "total_fine_amount",
+  "column_break_mtaj",
+  "amount_tcs_tds",
+  "column_break_qxmk",
+  "amount_without_gst",
+  "column_break_cytu",
+  "billing_gold_rate",
+  "column_break_oial",
+  "gold_rate_with_gst",
+  "section_break_oxoz",
+  "payload",
+  "amended_from"
  ],
  "fields": [
+  {
+   "fieldname": "section_break_mpio",
+   "fieldtype": "Section Break"
+  },
   {
    "fieldname": "date",
    "fieldtype": "Date",
    "label": "Date"
   },
   {
-   "fieldname": "column_break_hhnr",
+   "fieldname": "column_break_znhx",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "account_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Account Name"
   },
   {
-   "fieldname": "column_break_ltmx",
+   "fieldname": "column_break_xddz",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "gst_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Bill Type"
   },
   {
-   "fieldname": "column_break_hlmf",
+   "fieldname": "column_break_pylf",
    "fieldtype": "Column Break"
   },
   {
@@ -87,7 +123,7 @@
    "label": "Notes"
   },
   {
-   "fieldname": "section_break_ugvn",
+   "fieldname": "section_break_klcu",
    "fieldtype": "Section Break"
   },
   {
@@ -97,12 +133,14 @@
    "options": "Sales Issue Voucher Item"
   },
   {
-   "fieldname": "section_break_jgdw",
+   "fieldname": "section_break_uixh",
    "fieldtype": "Section Break"
   },
   {
    "fieldname": "gold_weight",
    "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Gold Weight"
   },
   {
@@ -123,6 +161,8 @@
   {
    "fieldname": "total_amt",
    "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Total Amt"
   },
   {
@@ -132,7 +172,7 @@
    "unique": 1
   },
   {
-   "fieldname": "column_break_kewz",
+   "fieldname": "column_break_pzyi",
    "fieldtype": "Column Break"
   },
   {
@@ -141,7 +181,7 @@
    "label": "Gold Rate"
   },
   {
-   "fieldname": "extra_charge",
+   "fieldname": "logistic_extra_charge",
    "fieldtype": "Float",
    "label": "Extra Charge"
   },
@@ -153,6 +193,8 @@
   {
    "fieldname": "tax_type_billing",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Bill Type Billling"
   },
   {
@@ -161,7 +203,7 @@
    "label": "Discount amount"
   },
   {
-   "fieldname": "column_break_jzfl",
+   "fieldname": "column_break_azpw",
    "fieldtype": "Column Break"
   },
   {
@@ -175,6 +217,7 @@
    "label": "Hallmark Charge"
   },
   {
+   "depends_on": "eval: doc.select_tax_type == 'TCS';",
    "fieldname": "tcs_amount",
    "fieldtype": "Float",
    "label": "TCS Amount"
@@ -185,7 +228,13 @@
    "label": "Gold Rate Billing"
   },
   {
-   "fieldname": "column_break_egrp",
+   "depends_on": "eval: doc.select_tax_type == 'TDS';",
+   "fieldname": "tds_amount",
+   "fieldtype": "Float",
+   "label": "TDS Amount"
+  },
+  {
+   "fieldname": "column_break_qhtc",
    "fieldtype": "Column Break"
   },
   {
@@ -214,28 +263,27 @@
    "label": "Narration"
   },
   {
-   "fieldname": "column_break_dnng",
+   "fieldname": "column_break_nqcv",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "select_tax_type",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Tax Type"
   },
   {
-   "fieldname": "logistic_account",
+   "fieldname": "logistic_account_name",
    "fieldtype": "Data",
    "label": "Logistic Account"
   },
   {
    "fieldname": "total_other_charge",
    "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
    "label": "Total OC"
-  },
-  {
-   "fieldname": "tds_amount",
-   "fieldtype": "Float",
-   "label": "TDS Amount"
   },
   {
    "fieldname": "created_at",
@@ -248,13 +296,20 @@
    "label": "Updated At"
   },
   {
-   "fieldname": "column_break_pwhv",
+   "fieldname": "column_break_ysem",
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval: doc.select_tax_type == 'TCS';",
    "fieldname": "tcs_calculate_option",
    "fieldtype": "Data",
-   "label": "TCS"
+   "label": "TCS Percent"
+  },
+  {
+   "depends_on": "eval: doc.select_tax_type == 'TDS';",
+   "fieldname": "tds_percentage",
+   "fieldtype": "Data",
+   "label": "TDS Percentage"
   },
   {
    "fieldname": "purc_sale_type",
@@ -267,18 +322,157 @@
    "label": "Hallmark Amount"
   },
   {
-   "fieldname": "section_break_hads",
+   "fieldname": "account_code",
+   "fieldtype": "Data",
+   "label": "Account Code"
+  },
+  {
+   "fieldname": "section_break_eorj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "billing_notes",
+   "fieldtype": "Data",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "generate_bill_type",
+   "fieldtype": "Select",
+   "label": "Generate Bill Type",
+   "options": "default\nitems"
+  },
+  {
+   "fieldname": "column_break_rlqz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "voucher_billing_dept_cat_type",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "Issue Voucher\nOn Approval Issue\nSale Bill\nLabour Bill\nHallmark Issue\nSales Debit Note\nPurchase Debit Note"
+  },
+  {
+   "fieldname": "column_break_tgyh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "sub_account",
+   "fieldtype": "Link",
+   "label": "Sub Account",
+   "options": "Address"
+  },
+  {
+   "fieldname": "column_break_yuue",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "godown_bill",
+   "fieldtype": "Check",
+   "label": "Godown Bill"
+  },
+  {
+   "default": "0",
+   "fieldname": "display_making_charges",
+   "fieldtype": "Check",
+   "label": "Display Making Charges"
+  },
+  {
+   "fieldname": "column_break_vsot",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_status",
+   "fieldtype": "Select",
+   "label": "Billing Status",
+   "options": "pending\napprove\nreject\nreturn"
+  },
+  {
+   "fieldname": "section_break_oxoz",
    "fieldtype": "Section Break"
   },
   {
    "fieldname": "payload",
    "fieldtype": "JSON",
+   "hidden": 1,
    "label": "Payload"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Sales Issue Voucher",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "billing_calculation_section",
+   "fieldtype": "Section Break",
+   "label": "Billing Calculation"
+  },
+  {
+   "fieldname": "total_fine_amount",
+   "fieldtype": "Float",
+   "label": "Total Fine Amount"
+  },
+  {
+   "fieldname": "column_break_mtaj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount_tcs_tds",
+   "fieldtype": "Float",
+   "label": "Amount TCS TDS"
+  },
+  {
+   "fieldname": "column_break_qxmk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount_without_gst",
+   "fieldtype": "Float",
+   "label": "Amount Without GST"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_cytu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_gold_rate",
+   "fieldtype": "Float",
+   "label": "Gold Rate"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "shipping_to_address",
+   "fieldtype": "Link",
+   "label": "Shipping To Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "column_break_oial",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gold_rate_with_gst",
+   "fieldtype": "Float",
+   "label": "Gold Rate With GST"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-14 02:19:05.733078",
+ "modified": "2024-06-17 13:56:41.842056",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
