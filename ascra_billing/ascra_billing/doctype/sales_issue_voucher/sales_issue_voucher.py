@@ -4,9 +4,18 @@
 import frappe
 from frappe.model.document import Document
 import frappe.utils
-
+import requests
 
 class SalesIssueVoucher(Document):
+	def on_update(self):
+		if self.workflow_state == "Approved":
+			send_status(self, "Approved")
+		elif self.workflow_state == "Rejected":
+			send_status(self, "Rejected")
+
+		
+
+
 	def before_save(self):
 		# Fetch Customer
 		self.customer = frappe.db.get_value("Customer", {"custom_account_code": self.account_code})
@@ -156,3 +165,39 @@ def get_item_details():
 		"income_account": company.get("default_income_account"),
 		"cost_center": company.get("cost_center")
 	}
+
+
+def send_status(self, status):
+	try:
+		settings_doc = frappe.get_single("Ascra Billing Settings")
+		url = settings_doc.api_url
+		if not url:
+			frappe.logger("workflow_status_log").exception(f"Api URL Not Configured")
+			return
+		billing_status = 1 if status == "Approved" else 2
+		frappe.logger("workflow_status_log").exception(billing_status)
+		payload = {
+			"id": self.name,
+			"billing_notes": self.billing_notes,
+			"billing_status": billing_status,
+			"billing_status_reason_remark": "",
+			"billing_status_feedback_remark": "", # TODO: Add Fields
+			"billing_status_approved_reject_by": "", # TODO: Add Fields
+			"voucher_billing_dept_cat_type": self.voucher_billing_dept_cat_type,
+			"generate_bill_type": self.generate_bill_type,
+			"sub_account_name": self.sub_account,
+			"sub_account_id": 0, # TODO: Fetch this Field Via UI
+			"display_making_charges": self.display_making_charges,
+			"godown_bill": self.godown_bill
+		}
+		files=[
+
+		]
+		headers = {}
+
+		response = requests.request("POST", url, headers=headers, data=payload, files=files)
+
+		frappe.logger("workflow_status_log").exception(f"Id : {self.id}, {response.json()}")
+	except Exception as e:
+		frappe.logger("workflow_status_log").exception(f"Id : {self.id}, {e}")
+
