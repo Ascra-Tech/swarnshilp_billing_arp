@@ -43,6 +43,8 @@ frappe.ui.form.on('Sales Invoice Item', {
                     row.item_name = r.message.item_name
                     row.cost_center = r.message.cost_center
                     refresh_field("items")
+
+                    frm.save('Save');
                  }
              });
             refresh_field("items")
