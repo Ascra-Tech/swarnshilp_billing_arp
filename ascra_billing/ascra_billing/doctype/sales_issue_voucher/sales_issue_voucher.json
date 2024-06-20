@@ -31,7 +31,7 @@
   "tax_type_billing",
   "discount_amount",
   "column_break_azpw",
-  "gold_purity",
+  "gold_rate_purity",
   "total_hallmark_charge",
   "tcs_amount",
   "gold_rate_billing",
@@ -69,12 +69,16 @@
   "billing_status",
   "billing_calculation_section",
   "total_fine_amount",
+  "making_charges",
   "column_break_mtaj",
   "amount_tcs_tds",
+  "making_rate_per_gram",
   "column_break_qxmk",
   "amount_without_gst",
+  "backup_making_rate_per_gram",
   "column_break_cytu",
   "billing_gold_rate",
+  "backup_making_charges",
   "column_break_oial",
   "gold_rate_with_gst",
   "section_break_oxoz",
@@ -195,11 +199,6 @@
   {
    "fieldname": "column_break_azpw",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "gold_purity",
-   "fieldtype": "Float",
-   "label": "Gold Purity"
   },
   {
    "fieldname": "total_hallmark_charge",
@@ -452,12 +451,37 @@
    "fieldname": "gold_rate_with_gst",
    "fieldtype": "Float",
    "label": "Gold Rate With GST"
+  },
+  {
+   "fieldname": "making_charges",
+   "fieldtype": "Float",
+   "label": "Making Charges"
+  },
+  {
+   "fieldname": "making_rate_per_gram",
+   "fieldtype": "Float",
+   "label": "Making Rate Per Gram"
+  },
+  {
+   "fieldname": "backup_making_rate_per_gram",
+   "fieldtype": "Float",
+   "label": "Backup Making Rate Per Gram"
+  },
+  {
+   "fieldname": "backup_making_charges",
+   "fieldtype": "Float",
+   "label": "Backup Making Charges"
+  },
+  {
+   "fieldname": "gold_rate_purity",
+   "fieldtype": "Float",
+   "label": "Gold Purity"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-17 00:13:46.903857",
+ "modified": "2024-06-20 22:38:55.175943",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",
