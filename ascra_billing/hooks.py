@@ -233,5 +233,13 @@ fixtures = [
       {
         "dt": "Property Setter", 
         "filters": [["module", "in", ["Ascra Billing"]]]
-      }
+      },
+      {
+        "dt": "Item", 
+        "filters": [["name", "in", ["MakingCharges"]]]
+      },
+      {
+        "dt": "GST HSN Code", 
+        "filters": [["name", "in", ["12345678"]]]
+      },
 ]
