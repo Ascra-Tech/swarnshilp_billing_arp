@@ -185,10 +185,7 @@ def make_sales_invoice(source_name, target_doc=None):
 			for item in source.item_details:
 				target.append("items", {
 					"custom_department": item.get("department_name"),
-					"rate": source.billing_gold_rate, # Replace this by Perfectly Calculated Gold Rate
-					"backup_making_charges":backup_making_charges,
-					"backup_making_rate_per_gram":backup_making_rate_per_gram,
-					"making_charges":making_charges,
+					"rate": source.billing_gold_rate,
 					"qty": item.net_wt,
 					"custom_pieces": item.pieces
 				})
