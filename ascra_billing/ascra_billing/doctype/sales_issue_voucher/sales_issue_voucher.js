@@ -4,8 +4,6 @@
 frappe.ui.form.on('Sales Issue Voucher', {
 	refresh(frm) {
 	    setQueryFilter(frm);
-		
-
         if(frm.doc.docstatus == 1){
             addSIButton(frm);
         }
@@ -17,7 +15,8 @@ frappe.ui.form.on('Sales Issue Voucher', {
 	account_code(frm) {
         // On change of Account Code Set Query FIlter Again
 	    setQueryFilter(frm);
-	}
+	},
+
 })
 
 function setQueryFilter(frm){
