@@ -168,7 +168,6 @@ def get_address_by_account_code():
 		frappe.response['message'] = address
 
 
-
 @frappe.whitelist()
 def make_sales_invoice(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc
@@ -203,12 +202,21 @@ def make_sales_invoice(source_name, target_doc=None):
 				})
 
 		if source.display_making_charges:
+			item_details = get_item_details(
+				company=get_default_company(),
+				item_code="MakingCharges"
+			).get("message")
+			frappe.logger("utils").exception(item_details)
 			target.append("items", {
 					"qty": 1,
 					"custom_pieces" : total_pcs,
 					"rate": source.making_charges,
 					"custom_item":"MakingCharges",
-					"item_name":"MakingCharges"
+					"uom" : item_details.get("stock_uom"),
+                    "income_account" : item_details.get("income_account"),
+                    "item_name" : item_details.get("item_name"),
+                    "cost_center" : item_details.get("cost_center"),
+					"gst_hsn_code": "12345678"
 				})
 
 	doclist = get_mapped_doc(
@@ -229,18 +237,28 @@ def make_sales_invoice(source_name, target_doc=None):
 
 	return doclist
 
+def get_default_company():
+    user = frappe.session.user
+    default_company = frappe.defaults.get_user_default("Company", user)
+    return default_company
 
 @frappe.whitelist()
-def get_item_details():
-	company = frappe.form_dict.company
-	item_code = frappe.form_dict.item_code
+def get_item_details(company=None, item_code = None):
+	company = frappe.form_dict.company or company
+	item_code = frappe.form_dict.item_code or item_code
 	item_details = frappe.get_value("Item", item_code, "*", as_dict=True)
+	frappe.logger("utils").exception(item_details)
 	company = frappe.get_value("Company", company, "*", as_dict=True)
-	frappe.response['message'] = {
+	item_details_dict = {
 		"stock_uom": item_details.get("stock_uom"),
 		"item_name": item_details.get("item_name"),
 		"income_account": company.get("default_income_account"),
 		"cost_center": company.get("cost_center")
+	}
+	frappe.response['message'] = item_details_dict
+
+	return {
+		"message": item_details_dict
 	}
 
 

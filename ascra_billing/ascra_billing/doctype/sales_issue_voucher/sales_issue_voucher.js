@@ -3,12 +3,13 @@
 
 frappe.ui.form.on('Sales Issue Voucher', {
 	refresh(frm) {
+        // frm.page.btn_primary.hide();
 	    setQueryFilter(frm);
         if(frm.doc.docstatus == 1){
             addSIButton(frm);
         }
         else{
-            // addActionButton(frm);
+            addActionButton(frm);
         }
 	},
 	
@@ -62,16 +63,22 @@ function addActionButton(frm){
         frm.doc.billing_status = 'approve'
         // Submit Doc
         refresh_field("billing_status")
-        frm.page.actions.find('[data-label="Edit"],[data-label="Approve"]').parent().parent().remove()
+        frm.page.actions.find('[data-label="Reject"],[data-label="Approve"]').parent().parent().remove()
         frm.save('Submit');
+
+        frappe.model.open_mapped_doc({
+			method: "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.make_sales_invoice",
+			frm: frm,
+		})
+
     });
 
-    // frm.page.add_action_item(__("Reject"), function() {
-    //     if(frm.doc.docstatus == 1){
-    //         frappe.throw("Document Already Approved")
-    //     }
-    //     frappe.msgprint("Rejected");
-    //     frm.doc.billing_status = 'reject'
-    //     refresh_field("billing_status")
-    // });
+    frm.page.add_action_item(__("Reject"), function() {
+        if(frm.doc.docstatus == 1){
+            frappe.throw("Document Already Approved")
+        }
+        frappe.msgprint("Rejected");
+        frm.doc.billing_status = 'reject'
+        refresh_field("billing_status")
+    });
 }

@@ -1,8 +1,15 @@
 
 
 frappe.ui.form.on('Sales Invoice', {
-	refresh(frm) {
-        
+	refresh(frm, cdt, cdn) {
+
+        var data = frm.doc.items
+        data.forEach(function(e){
+            if (e.custom_item == "MakingCharges"){
+                $("[data-idx='"+e.idx+"']").css('pointer-events','none');;	
+            }
+        })
+
         frm.set_query("item_code", "items", function (doc, cdt, cdn) {
 			let d = locals[cdt][cdn];
 			return {
@@ -27,7 +34,10 @@ frappe.ui.form.on('Sales Invoice', {
 
 frappe.ui.form.on('Sales Invoice Item', {
 	custom_item: function (frm, cdt, cdn) {
+
 		var row = locals[cdt][cdn];
+    
+
 		if (row.custom_item) {
             row.item_code = row.custom_item
 			row.rate = frm.doc.custom_gold_rate
@@ -38,10 +48,11 @@ frappe.ui.form.on('Sales Invoice Item', {
                      item_code: row.custom_item
                  },
                  callback: (r)=> {
-                    row.uom = r.message.stock_uom
-                    row.income_account = r.message.income_account
-                    row.item_name = r.message.item_name
-                    row.cost_center = r.message.cost_center
+                    var data = r.message
+                    row.uom = data.message.stock_uom
+                    row.income_account = data.message.income_account
+                    row.item_name = data.message.item_name
+                    row.cost_center = data.message.cost_center
                     refresh_field("items")
 
                     frm.save('Save');
