@@ -99,18 +99,7 @@ function addActionButton(frm){
         // Submit Doc
         refresh_field("billing_status")
         frm.page.actions.find('[data-label="Reject"],[data-label="Approve"]').parent().parent().remove()
-        
-        frappe.call({
-            method: "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.submit_doc",
-             args: {
-                doc: frm.doc
-             },
-             callback: (r)=> {
-                
-                // window.location.reload();
-    
-             }
-         });
+        frm.save("Submit")
 
 
         frappe.model.open_mapped_doc({
