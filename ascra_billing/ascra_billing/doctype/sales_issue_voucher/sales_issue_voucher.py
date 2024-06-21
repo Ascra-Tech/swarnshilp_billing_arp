@@ -5,8 +5,11 @@ import frappe
 from frappe.model.document import Document
 import frappe.utils
 import requests
+import json
 
 class SalesIssueVoucher(Document):
+	# def before_submit(self):
+	# 	frappe.throw("Submit Not Allowed Directly, Please Approve the Document to submit")
 	def on_update(self):
 		if self.workflow_state == "Approved":
 			send_status(self, "Approved")
@@ -131,7 +134,7 @@ class SalesIssueVoucher(Document):
 			if self.gold_rate_purity==99.500 :
 				gold_rate = (gold_rate/99.5)/100
 
-			making_charges = rate_cut * gold_rate
+			making_charges = float(rate_cut) * float(gold_rate)
 			other_charges = (float(self.hallmark_amount or 0) + float(self.logistic_amount or 0) + float(self.total_other_charge or 0))
 			making_charges = (making_charges + other_charges)
 			making_rate_per_gram = float(making_charges) / float(total_net_wt)
@@ -149,7 +152,10 @@ class SalesIssueVoucher(Document):
 	def on_submit(self):
 		self.billing_status = 'approve'
 
-
+@frappe.whitelist()
+def submit_doc(doc):
+	doc = json.loads(doc)
+	doc.submit()
 
 # ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.get_address_by_account_code
 @frappe.whitelist()
@@ -296,3 +302,7 @@ def send_status(self, status):
 	except Exception as e:
 		frappe.logger("workflow_status_log").exception(f"Id : {self.id}, {e}")
 
+@frappe.whitelist()
+def set_status(docname, status):
+	frappe.db.set_value("Sales Issue Voucher", docname, "billing_status", status)
+	frappe.db.commit()
