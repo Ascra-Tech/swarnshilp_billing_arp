@@ -131,7 +131,7 @@ class SalesIssueVoucher(Document):
 			if self.gold_rate_purity==99.500 :
 				gold_rate = (gold_rate/99.5)/100
 
-			making_charges = rate_cut * gold_rate
+			making_charges = float(rate_cut) * float(gold_rate)
 			other_charges = (float(self.hallmark_amount or 0) + float(self.logistic_amount or 0) + float(self.total_other_charge or 0))
 			making_charges = (making_charges + other_charges)
 			making_rate_per_gram = float(making_charges) / float(total_net_wt)
