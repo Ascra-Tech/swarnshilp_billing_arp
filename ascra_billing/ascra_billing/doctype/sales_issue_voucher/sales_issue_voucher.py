@@ -73,9 +73,10 @@ class SalesIssueVoucher(Document):
 
 		amount_tcs_tds = (
 			total_fine_amount + 
-			float(self.hallmark_amount or 0) + 
-			float(self.logistic_amount or 0) + 
-			float(self.total_other_charge or 0)
+			float(self.total_hallmark_amount or 0) + 
+			float(self.total_logistic_amount or 0) + 
+			float(self.total_other_charge or 0) +
+			float(self.discount_amount or 0)
 		)
 		self.amount_tcs_tds = amount_tcs_tds
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
@@ -115,9 +116,10 @@ class SalesIssueVoucher(Document):
 
 			making_charges = rate_cut * gold_rate
 			other_charges = (
-				float(self.hallmark_amount or 0) + 
-				float(self.logistic_amount or 0) + 
-				float(self.total_other_charge or 0)
+				float(self.total_hallmark_amount or 0) + 
+				float(self.total_logistic_amount or 0) + 
+				float(self.total_other_charge or 0) +
+				float(self.discount_amount or 0)
 			)
 			making_charges = float(making_charges) + float(other_charges)
 			making_rate_per_gram = making_charges / total_net_wt
@@ -132,7 +134,7 @@ class SalesIssueVoucher(Document):
 				gold_rate = (gold_rate/99.5)/100
 
 			making_charges = float(rate_cut) * float(gold_rate)
-			other_charges = (float(self.hallmark_amount or 0) + float(self.logistic_amount or 0) + float(self.total_other_charge or 0))
+			other_charges = (float(self.total_hallmark_amount or 0) + float(self.total_logistic_amount or 0) + float(self.total_other_charge or 0) + float(self.discount_amount or 0))
 			making_charges = (making_charges + other_charges)
 			making_rate_per_gram = float(making_charges) / float(total_net_wt)
 			backup_making_rate_per_gram = making_rate_per_gram
