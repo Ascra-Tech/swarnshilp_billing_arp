@@ -52,7 +52,7 @@
   "tcs_calculate_option",
   "tds_percentage",
   "purc_sale_type",
-  "hallmark_amount",
+  "total_hallmark_amount",
   "account_code",
   "section_break_eorj",
   "billing_notes",
@@ -302,11 +302,6 @@
    "label": "P / S"
   },
   {
-   "fieldname": "hallmark_amount",
-   "fieldtype": "Float",
-   "label": "Hallmark Amount"
-  },
-  {
    "fieldname": "account_code",
    "fieldtype": "Data",
    "label": "Account Code"
@@ -476,12 +471,17 @@
    "fieldname": "gold_rate_purity",
    "fieldtype": "Float",
    "label": "Gold Purity"
+  },
+  {
+   "fieldname": "total_hallmark_amount",
+   "fieldtype": "Float",
+   "label": "Hallmark Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-20 22:38:55.175943",
+ "modified": "2024-06-25 16:28:50.961156",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",
