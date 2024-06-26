@@ -72,7 +72,7 @@ class SalesIssueVoucher(Document):
 		# Set Billing Account Fields
 		
 		total_fine_amount = float(self.gold_rate_billing or 0) * float(total_fine)
-		self.total_fine_amount = total_fine_amount
+		self.total_fine_amount = round(total_fine_amount)
 
 		amount_tcs_tds = (
 			total_fine_amount + 
@@ -81,7 +81,7 @@ class SalesIssueVoucher(Document):
 			float(self.total_other_charge or 0) +
 			float(self.discount_amount or 0)
 		)
-		self.amount_tcs_tds = amount_tcs_tds
+		self.amount_tcs_tds = round(amount_tcs_tds)
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			amount_without_gst =(amount_tcs_tds/105)*100
 		else:
