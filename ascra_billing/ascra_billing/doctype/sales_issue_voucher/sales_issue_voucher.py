@@ -91,9 +91,15 @@ class SalesIssueVoucher(Document):
 			amount_without_gst =(amount_tcs_tds/103)*100
 
 		self.amount_without_gst = amount_without_gst
-		billing_gold_rate = (
-			amount_without_gst / total_net_wt
-		)
+		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
+			billing_gold_rate = (
+				amount_without_gst / gold_weight
+			)	
+		else:
+			billing_gold_rate = (
+				amount_without_gst / total_net_wt
+			)
+
 		self.billing_gold_rate = billing_gold_rate
 		
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
