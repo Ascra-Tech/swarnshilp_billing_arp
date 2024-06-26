@@ -82,25 +82,25 @@ class SalesIssueVoucher(Document):
 			float(self.discount_amount or 0)
 		)
 		self.amount_tcs_tds = round(amount_tcs_tds)
-		frappe.logger("sales_issue_voucher").exception(f"amount_tcs_tds : {amount_tcs_tds}, {response.json()}")
+		frappe.logger("sales_issue_voucher").exception(f"amount_tcs_tds : {amount_tcs_tds}")
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			amount_without_gst =(amount_tcs_tds/105)*100
 		else:
 			amount_without_gst =(amount_tcs_tds/103)*100
 
-		frappe.logger("sales_issue_voucher").exception(f"amount_without_gst : {amount_without_gst}, {response.json()}")
+		frappe.logger("sales_issue_voucher").exception(f"amount_without_gst : {amount_without_gst}")
 		self.amount_without_gst = amount_without_gst
 		billing_gold_rate = (
 			amount_without_gst / total_net_wt
 		)
 		self.billing_gold_rate = billing_gold_rate
-		frappe.logger("sales_issue_voucher").exception(f"billing_gold_rate : {billing_gold_rate}, {response.json()}")
+		frappe.logger("sales_issue_voucher").exception(f"billing_gold_rate : {billing_gold_rate}")
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			gst_amount = (5 / 100) * billing_gold_rate
 		else:
 			gst_amount = (3 / 100) * billing_gold_rate
 
-		frappe.logger("sales_issue_voucher").exception(f"gst_amount : {gst_amount}, {response.json()}")
+		frappe.logger("sales_issue_voucher").exception(f"gst_amount : {gst_amount}")
 
 		self.gold_rate_with_gst = billing_gold_rate + gst_amount
 
