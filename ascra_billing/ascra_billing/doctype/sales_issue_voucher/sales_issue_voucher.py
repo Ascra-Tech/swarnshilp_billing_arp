@@ -70,8 +70,11 @@ class SalesIssueVoucher(Document):
 			})
 
 		# Set Billing Account Fields
-		
-		total_fine_amount = float(self.gold_rate_billing or 0) * float(total_fine)
+		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
+			total_fine_amount = float(self.gold_rate_billing or 0) * float(self.gold_weight or 0)
+		else :
+			total_fine_amount = float(self.gold_rate_billing or 0) * float(total_fine)
+
 		self.total_fine_amount = round(total_fine_amount)
 
 		amount_tcs_tds = (
