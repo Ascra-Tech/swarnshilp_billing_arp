@@ -70,6 +70,7 @@ class SalesIssueVoucher(Document):
 				"other_charges": ''
 			})
 
+
 		# Set Billing Account Fields
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			total_fine_amount = float(self.gold_rate_billing or 0) * float(self.gold_weight or 0)
@@ -77,7 +78,7 @@ class SalesIssueVoucher(Document):
 			total_fine_amount = float(self.gold_rate_billing or 0) * float(total_fine)
 
 		self.total_fine_amount = round(total_fine_amount)
-
+	
 		amount_tcs_tds = (
 			total_fine_amount + 
 			float(self.total_hallmark_amount or 0) + 
@@ -95,13 +96,14 @@ class SalesIssueVoucher(Document):
 		
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			billing_gold_rate = (
-				amount_without_gst / self.gold_weight
+				amount_without_gst / total_net_wt
 			)	
 		else:
 			billing_gold_rate = (
 				amount_without_gst / total_net_wt
 			)
 
+		
 		self.billing_gold_rate = billing_gold_rate
 		
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
@@ -109,10 +111,10 @@ class SalesIssueVoucher(Document):
 		else:
 			gst_amount = (3 / 100) * billing_gold_rate
 
-		#frappe.utils.logger.set_log_level("DEBUG")
-		#logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
+		frappe.utils.logger.set_log_level("DEBUG")
+		logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
 
-		# logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
+		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
 
 
 
