@@ -22,7 +22,7 @@ class SalesIssueVoucher(Document):
 	def before_save(self):
 		# Fetch Customer
 		self.customer = frappe.db.get_value("Customer", {"custom_account_code": self.account_code})
-		
+		# frappe.logger("utils").exception(self.voucher_billing_dept_cat_type.lower())
 		if self.total_amt:
 			total_amt = float(self.total_amt)
 		else:
@@ -44,6 +44,7 @@ class SalesIssueVoucher(Document):
 		total_fine = 0
 		item_index = 0
 		making_purity = 0
+		voucher_billing_dept_cat_type = ""
 		if self.item_details:
 
 			total_row = self.item_details[-1]
@@ -91,6 +92,7 @@ class SalesIssueVoucher(Document):
 			amount_without_gst =(amount_tcs_tds/103)*100
 
 		self.amount_without_gst = amount_without_gst
+		
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			billing_gold_rate = (
 				amount_without_gst / self.gold_weight
@@ -101,17 +103,17 @@ class SalesIssueVoucher(Document):
 			)
 
 		self.billing_gold_rate = billing_gold_rate
-		voucher_billing_dept_cat_type = ""
+		
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
-			# voucher_billing_dept_cat_type = self.voucher_billing_dept_cat_type
 			gst_amount = (5 / 100) * billing_gold_rate
 		else:
 			gst_amount = (3 / 100) * billing_gold_rate
-			# voucher_billing_dept_cat_type = self.voucher_billing_dept_cat_type
-		frappe.utils.logger.set_log_level("DEBUG")
-		logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
-		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type} variable :")
-		
+
+		#frappe.utils.logger.set_log_level("DEBUG")
+		#logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
+
+		# logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
+
 
 
 		self.gold_rate_with_gst = billing_gold_rate + gst_amount
