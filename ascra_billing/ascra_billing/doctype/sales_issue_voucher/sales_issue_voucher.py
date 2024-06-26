@@ -98,13 +98,11 @@ class SalesIssueVoucher(Document):
 		else:
 			gst_amount = (3 / 100) * billing_gold_rate
 
-		response =  {
-				"amount_tcs_tds": amount_tcs_tds,
-				"amount_without_gst": amount_without_gst,
-				"total_fine_amount": total_fine_amount,
-				"gst_amount": gst_amount
-			}
-		frappe.logger("sales_issue_voucher").exception(f"Id : {self.id}, {response.json()}")	
+		frappe.utils.logger.set_log_level("DEBUG")
+		logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
+		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst}")
+
+
 
 		self.gold_rate_with_gst = billing_gold_rate + gst_amount
 
