@@ -93,7 +93,7 @@ class SalesIssueVoucher(Document):
 		self.amount_without_gst = amount_without_gst
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
 			billing_gold_rate = (
-				amount_without_gst / gold_weight
+				amount_without_gst / self.gold_weight
 			)	
 		else:
 			billing_gold_rate = (
