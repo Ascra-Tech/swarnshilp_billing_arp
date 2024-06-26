@@ -54,7 +54,7 @@
   "purc_sale_type",
   "total_hallmark_amount",
   "account_code",
-  "float_gkux",
+  "total_logistic_amount",
   "section_break_eorj",
   "billing_notes",
   "generate_bill_type",
@@ -479,14 +479,15 @@
    "label": "Hallmark Amount"
   },
   {
-   "fieldname": "float_gkux",
-   "fieldtype": "Float"
+   "fieldname": "total_logistic_amount",
+   "fieldtype": "Float",
+   "label": "Total Logistic Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-26 13:17:40.955825",
+ "modified": "2024-06-26 17:31:03.717371",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",
