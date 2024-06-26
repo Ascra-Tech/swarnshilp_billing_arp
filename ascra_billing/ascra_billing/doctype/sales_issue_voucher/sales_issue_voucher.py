@@ -103,14 +103,14 @@ class SalesIssueVoucher(Document):
 		self.billing_gold_rate = billing_gold_rate
 		voucher_billing_dept_cat_type = ""
 		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
-			voucher_billing_dept_cat_type = self.voucher_billing_dept_cat_type
+			# voucher_billing_dept_cat_type = self.voucher_billing_dept_cat_type
 			gst_amount = (5 / 100) * billing_gold_rate
 		else:
 			gst_amount = (3 / 100) * billing_gold_rate
-			voucher_billing_dept_cat_type = self.voucher_billing_dept_cat_type
+			# voucher_billing_dept_cat_type = self.voucher_billing_dept_cat_type
 		frappe.utils.logger.set_log_level("DEBUG")
 		logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
-		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
+		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type} : {self.json()}")
 
 
 		self.gold_rate_with_gst = billing_gold_rate + gst_amount
