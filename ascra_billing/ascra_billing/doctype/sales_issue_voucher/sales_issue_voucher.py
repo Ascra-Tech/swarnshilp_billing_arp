@@ -109,7 +109,7 @@ class SalesIssueVoucher(Document):
 
 		frappe.utils.logger.set_log_level("DEBUG")
 		logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
-		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst}")
+		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type {self.self.voucher_billing_dept_cat_type}")
 
 
 
