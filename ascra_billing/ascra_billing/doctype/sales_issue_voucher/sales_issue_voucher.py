@@ -111,13 +111,19 @@ class SalesIssueVoucher(Document):
 		else:
 			gst_amount = (3 / 100) * billing_gold_rate
 
-		frappe.utils.logger.set_log_level("DEBUG")
-		logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
+		# print("Total fine amount")
+		# print(total_fine_amount)
 
-		logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
+		# print("amount_without_gst")
+		# print(amount_without_gst)
+		# frappe.utils.logger.set_log_level("DEBUG")
+		# logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
 
+		# logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
+	
 
-
+		# print("billing_gold_rate")
+		# print(billing_gold_rate)
 		self.gold_rate_with_gst = billing_gold_rate + gst_amount
 
 		# Making charge #
@@ -134,10 +140,11 @@ class SalesIssueVoucher(Document):
 			rate_per_cut = total_net_wt * (making_purity/100)
 			rate_cut = total_fine - rate_per_cut
 			gold_rate = self.gold_rate
-			if self.gold_rate_purity == 99.500:
-				gold_rate = (gold_rate/99.5)/100
+			if float(self.gold_rate_purity or 0) == 99.500:
+				gold_rate = (gold_rate/99.5)*100
 
 			making_charges = rate_cut * gold_rate
+
 			other_charges = (
 				float(self.total_hallmark_amount or 0) + 
 				float(self.total_logistic_amount or 0) + 
@@ -145,7 +152,12 @@ class SalesIssueVoucher(Document):
 				float(self.discount_amount or 0)
 			)
 			making_charges = float(making_charges) + float(other_charges)
+
 			making_rate_per_gram = making_charges / total_net_wt
+
+			billing_gold_rate = float(billing_gold_rate) - float(making_rate_per_gram)
+			self.billing_gold_rate = billing_gold_rate
+		
 			rate_per_gram = rate_per_gram - making_rate_per_gram
 			backup_making_rate_per_gram = making_rate_per_gram
 			backup_making_charges = making_charges
@@ -153,8 +165,8 @@ class SalesIssueVoucher(Document):
 			rate_per_cut = float(total_net_wt) * (float(making_purity)/100)
 			rate_cut = float(total_fine) - rate_per_cut
 			gold_rate = self.gold_rate
-			if self.gold_rate_purity==99.500 :
-				gold_rate = (gold_rate/99.5)/100
+			if self.gold_rate_purity == 99.500:
+				gold_rate = (gold_rate/99.5)*100
 
 			making_charges = float(rate_cut) * float(gold_rate)
 			other_charges = (float(self.total_hallmark_amount or 0) + float(self.total_logistic_amount or 0) + float(self.total_other_charge or 0) + float(self.discount_amount or 0))
@@ -163,7 +175,6 @@ class SalesIssueVoucher(Document):
 			backup_making_rate_per_gram = making_rate_per_gram
 			backup_making_charges = float(total_net_wt) * making_rate_per_gram;
 
-		
 		self.making_charges = making_charges
 		self.making_rate_per_gram = making_rate_per_gram
 		self.backup_making_rate_per_gram = backup_making_rate_per_gram
