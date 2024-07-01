@@ -54,6 +54,8 @@
   "purc_sale_type",
   "hallmark_amount",
   "account_code",
+  "total_logistic_amount",
+  "total_hallmark_amount",
   "section_break_eorj",
   "billing_notes",
   "generate_bill_type",
@@ -468,11 +470,21 @@
    "fieldname": "gold_rate_with_gst",
    "fieldtype": "Float",
    "label": "Gold Rate With GST"
+  },
+  {
+   "fieldname": "total_logistic_amount",
+   "fieldtype": "Float",
+   "label": "Total Logistic Amount"
+  },
+  {
+   "fieldname": "total_hallmark_amount",
+   "fieldtype": "Float",
+   "label": "Total Hallmark Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-17 13:56:41.842056",
+ "modified": "2024-07-01 21:13:18.271549",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
