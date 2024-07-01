@@ -242,6 +242,10 @@ def send_status(self, status):
 	except Exception as e:
 		frappe.logger("workflow_status_log").exception(f"Id : {self.id}, {e}")
 
+@frappe.whitelist()
+def set_status(docname, status):
+	frappe.db.set_value("Sales Receipt Voucher", docname, "billing_status", status)
+	frappe.db.commit()
 # @frappe.whitelist()
 # def set_status(docname, status):
 # 	frappe.db.set_value("Sales Issue Voucher", docname, "billing_status", status)
