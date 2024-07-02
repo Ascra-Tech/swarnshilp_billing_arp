@@ -5,9 +5,9 @@ frappe.ui.form.on('Sales Invoice', {
 
         var data = frm.doc.items
         data.forEach(function(e){
-            if (e.custom_item == "MakingCharges"){
-                $("[data-idx='"+e.idx+"']").css('pointer-events','none');;	
-            }
+            // if (e.custom_item == "MakingCharges"){
+            //     $("[data-idx='"+e.idx+"']").css('pointer-events','none');;	
+            // }
         })
 
         frm.set_query("item_code", "items", function (doc, cdt, cdn) {
