@@ -42,7 +42,6 @@ class SalesReceiptVoucher(Document):
 			if total_row.get("category") == "Total":
 				self.item_details.pop()
 			
-			total_net_wt = 1000
 
 			self.append("item_details", {
 				"category": "Total",
@@ -63,18 +62,11 @@ class SalesReceiptVoucher(Document):
 
 		# self.amount_tcs_tds = round(amount_tcs_tds)
 		#amount_tcs_tds = self.total_amt
-		
-		print("gst name")
-		print(self.gst_name)
 
 		if self.gst_name != "" and self.purc_sale_type == "":
 			if (self.gst_name).lower() == 'sale bill':
 				amount_tcs_tds = float(amount_tcs_tds)
-				print("amount_tcs_tds")
-				print(amount_tcs_tds)
 				rate_per_gram = ((amount_tcs_tds/103)*100)/total_net_wt
-				print("rate_per_gram1")
-				print(rate_per_gram)
 			elif (self.gst_name).lower() == 'labour bill':
 				amount_tcs_tds = float(amount_tcs_tds)
 				rate_per_gram = ((amount_tcs_tds/105)*100)/total_net_wt
@@ -83,9 +75,6 @@ class SalesReceiptVoucher(Document):
 		else :
 			rate_per_gram = float(amount_tcs_tds/total_net_wt)
 
-
-		print("rate per gram")
-		print(rate_per_gram)
 
 		billing_gold_rate = 0
 		self.billing_gold_rate = float(rate_per_gram or 0)
