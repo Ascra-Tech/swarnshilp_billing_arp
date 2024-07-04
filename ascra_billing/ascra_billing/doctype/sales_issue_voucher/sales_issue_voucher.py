@@ -260,8 +260,8 @@ def make_sales_invoice(source_name, target_doc=None):
 					"billing_gold_rate": "custom_gold_rate",
 					"gold_rate_with_gst": "custom_gold_rate__with_gst",
 					"sub_account":"customer_address",
-					"shipping_to_address": "shipping_address_name"
-					# "name": "custom_sales_issue_voucher"
+					"shipping_to_address": "shipping_address_name",
+					"name": "custom_sales_issue_voucher"
 				}},
 		},
 		target_doc,
@@ -276,17 +276,19 @@ def get_default_company():
     return default_company
 
 @frappe.whitelist()
-def get_item_details(company=None, item_code = None):
+def get_item_details(company=None, item_code = None, sales_issue_voucher=None):
 	company = frappe.form_dict.company or company
 	item_code = frappe.form_dict.item_code or item_code
 	item_details = frappe.get_value("Item", item_code, "*", as_dict=True)
 	frappe.logger("utils").exception(item_details)
 	company = frappe.get_value("Company", company, "*", as_dict=True)
+	rate = frappe.get_value("Sales Issue Voucher", sales_issue_voucher, 'billing_gold_rate')
 	item_details_dict = {
 		"stock_uom": item_details.get("stock_uom"),
 		"item_name": item_details.get("item_name"),
 		"income_account": company.get("default_income_account"),
-		"cost_center": company.get("cost_center")
+		"cost_center": company.get("cost_center"),
+		"rate": rate
 	}
 	frappe.response['message'] = item_details_dict
 

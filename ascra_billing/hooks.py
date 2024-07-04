@@ -28,7 +28,10 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Sales Invoice" : "public/js/sales_invoice.js"}
+doctype_js = {
+                "Sales Invoice" : "public/js/sales_invoice.js",
+                "Delivery Note" : "public/js/delivery_note.js",
+              }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -125,7 +128,10 @@ doctype_js = {"Sales Invoice" : "public/js/sales_invoice.js"}
 doc_events = {
 	"Sales Invoice": {
 		"before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.before_save"
-	}
+	},
+  # "Delivery Note": {
+  #   "before_save": "ascra_billing.ascra_billing.doc_events.delivery_note.before_save"
+	# }
 }
 
 # Scheduled Tasks
@@ -157,9 +163,9 @@ doc_events = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "ascra_billing.event.get_events"
-# }
+override_whitelisted_methods = {
+	"erpnext.accounts.doctype.sales_invoice.sales_invoice.make_delivery_note": "ascra_billing.ascra_billing.doc_events.sales_invoice.make_delivery_note"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
