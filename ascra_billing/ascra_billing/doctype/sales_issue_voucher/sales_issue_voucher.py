@@ -339,3 +339,19 @@ def send_status(self, status):
 def set_status(docname, status):
 	frappe.db.set_value("Sales Issue Voucher", docname, "billing_status", status)
 	frappe.db.commit()
+
+# ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.get_address_by_account_code
+@frappe.whitelist()
+def get_docket_file_path():
+	voucher_id = frappe.form_dict.id
+	if not frappe.form_dict.id:
+		frappe.response['message'] = []
+		
+	get_delivery_note_data = frappe.db.get_value("Delivery Note", {"custom_sales_issue_voucher": voucher_id})
+	
+	get_file_url = frappe.db.get_value("File",{"attached_to_name":get_delivery_note_data},'file_url')
+
+	if not get_file_url:
+		frappe.response['message'] = []
+	else:
+		frappe.response['message'] = get_file_url
