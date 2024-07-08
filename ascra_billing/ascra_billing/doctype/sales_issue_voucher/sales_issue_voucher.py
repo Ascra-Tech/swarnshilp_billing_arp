@@ -8,6 +8,8 @@ import requests
 import json
 
 class SalesIssueVoucher(Document):
+	def before_insert(self):
+		perform_calculations(self)
 	# def before_submit(self):
 	# 	frappe.throw("Submit Not Allowed Directly, Please Approve the Document to submit")
 	def on_update(self):
@@ -20,170 +22,162 @@ class SalesIssueVoucher(Document):
 
 
 	def before_save(self):
-		# Fetch Customer
-		self.customer = frappe.db.get_value("Customer", {"custom_account_code": self.account_code})
-		# frappe.logger("utils").exception(self.voucher_billing_dept_cat_type.lower())
-		if self.total_amt:
-			total_amt = float(self.total_amt)
-		else:
-			total_amt = 0
-		if self.tds_amount:
-			tds_amount = float(self.tds_amount)
-		else:
-			tds_amount = 0
+		perform_calculations(self)
 
-		if self.tcs_amount:
-			tcs_amount = float(self.tcs_amount)
-		else:
-			tcs_amount = 0
+	def on_submit(self):
+		perform_calculations(self)
+		self.billing_status = 'approve'
 
-		self.net_bill_amt = total_amt + tds_amount
-		# Add Total Column.
-		total_net_wt = 0
-		total_pcs = 0
-		total_fine = 0
-		item_index = 0
-		making_purity = 0
-		voucher_billing_dept_cat_type = ""
-		if self.item_details:
+def perform_calculations(self):
+	# Fetch Customer
+	self.customer = frappe.db.get_value("Customer", {"custom_account_code": self.account_code})
+	# frappe.logger("utils").exception(self.voucher_billing_dept_cat_type.lower())
+	if self.total_amt:
+		total_amt = float(self.total_amt)
+	else:
+		total_amt = 0
+	if self.tds_amount:
+		tds_amount = float(self.tds_amount)
+	else:
+		tds_amount = 0
 
-			total_row = self.item_details[-1]
-			if total_row.get("category") == "Total":
-				self.item_details.pop()
+	if self.tcs_amount:
+		tcs_amount = float(self.tcs_amount)
+	else:
+		tcs_amount = 0
 
-			for item in self.item_details:
-				if item_index == 0:
-					making_purity = item.melting
-				total_net_wt += float(item.net_wt)
-				total_pcs += float(item.pieces)
-				total_fine += float(item.fine)
-				item_index += int(item_index)
+	self.net_bill_amt = total_amt + tds_amount
+	# Add Total Column.
+	total_net_wt = 0
+	total_pcs = 0
+	total_fine = 0
+	item_index = 0
+	making_purity = 0
+	voucher_billing_dept_cat_type = ""
+	if self.item_details:
 
-				
-			self.append("item_details", {
-				"category": "Total",
-				"net_wt": total_net_wt,
-				"pieces": float(total_pcs),
-				"melting": '',
-				"wastage": '',
-				"fine": total_fine,
-				"other_charges": ''
-			})
+		total_row = self.item_details[-1]
+		if total_row.get("category") == "Total":
+			self.item_details.pop()
+
+		for item in self.item_details:
+			if item_index == 0:
+				making_purity = item.melting
+			total_net_wt += float(item.net_wt)
+			total_pcs += float(item.pieces)
+			total_fine += float(item.fine)
+			item_index += int(item_index)
+
+			
+		self.append("item_details", {
+			"category": "Total",
+			"net_wt": total_net_wt,
+			"pieces": float(total_pcs),
+			"melting": '',
+			"wastage": '',
+			"fine": total_fine,
+			"other_charges": ''
+		})
 
 
-		# Set Billing Account Fields
-		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
-			total_fine_amount = float(self.gold_rate_billing or 0) * float(self.gold_weight or 0)
-		else :
-			total_fine_amount = float(self.gold_rate_billing or 0) * float(total_fine)
+	# Set Billing Account Fields
+	if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
+		total_fine_amount = float(self.gold_rate_billing or 0) * float(self.gold_weight or 0)
+	else :
+		total_fine_amount = float(self.gold_rate_billing or 0) * float(total_fine)
 
-		self.total_fine_amount = round(total_fine_amount)
+	self.total_fine_amount = round(total_fine_amount)
+
+	amount_tcs_tds = (
+		total_fine_amount + 
+		float(self.total_hallmark_amount or 0) + 
+		float(self.total_logistic_amount or 0) + 
+		float(self.total_other_charge or 0) +
+		float(self.discount_amount or 0)
+	)
+	self.amount_tcs_tds = round(amount_tcs_tds)
+	if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
+		amount_without_gst =(amount_tcs_tds/105)*100
+	else:
+		amount_without_gst =(amount_tcs_tds/103)*100
+
+	self.amount_without_gst = amount_without_gst
 	
-		amount_tcs_tds = (
-			total_fine_amount + 
+	if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
+		billing_gold_rate = (
+			amount_without_gst / total_net_wt
+		)	
+	else:
+		billing_gold_rate = (
+			amount_without_gst / total_net_wt
+		)
+
+	
+	self.billing_gold_rate = billing_gold_rate
+	
+	if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
+		gst_amount = (5 / 100) * billing_gold_rate
+	else:
+		gst_amount = (3 / 100) * billing_gold_rate
+
+	
+	self.gold_rate_with_gst = billing_gold_rate + gst_amount
+
+	# Making charge #
+	rate_per_gram = float(amount_without_gst) / float(total_net_wt)
+
+	rate_per_cut = 0
+	rate_cut = 0
+	making_charges = 0
+	making_rate_per_gram = 0
+	backup_making_rate_per_gram = 0
+	backup_making_charges = 0
+
+	if self.display_making_charges == 1:
+		rate_per_cut = total_net_wt * (making_purity/100)
+		rate_cut = total_fine - rate_per_cut
+		gold_rate = self.gold_rate
+		if float(self.gold_rate_purity or 0) == 99.500:
+			gold_rate = (gold_rate/99.5)*100
+
+		making_charges = rate_cut * gold_rate
+
+		other_charges = (
 			float(self.total_hallmark_amount or 0) + 
 			float(self.total_logistic_amount or 0) + 
 			float(self.total_other_charge or 0) +
 			float(self.discount_amount or 0)
 		)
-		self.amount_tcs_tds = round(amount_tcs_tds)
-		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
-			amount_without_gst =(amount_tcs_tds/105)*100
-		else:
-			amount_without_gst =(amount_tcs_tds/103)*100
+		making_charges = float(making_charges) + float(other_charges)
 
-		self.amount_without_gst = amount_without_gst
-		
-		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
-			billing_gold_rate = (
-				amount_without_gst / total_net_wt
-			)	
-		else:
-			billing_gold_rate = (
-				amount_without_gst / total_net_wt
-			)
+		making_rate_per_gram = making_charges / total_net_wt
 
-		
+		billing_gold_rate = float(billing_gold_rate) - float(making_rate_per_gram)
 		self.billing_gold_rate = billing_gold_rate
-		
-		if (self.voucher_billing_dept_cat_type).lower() == "labour bill":
-			gst_amount = (5 / 100) * billing_gold_rate
-		else:
-			gst_amount = (3 / 100) * billing_gold_rate
-
-		# print("Total fine amount")
-		# print(total_fine_amount)
-
-		# print("amount_without_gst")
-		# print(amount_without_gst)
-		# frappe.utils.logger.set_log_level("DEBUG")
-		# logger_issue = frappe.logger("sales_issue_voucher_calculate", allow_site=True, file_count=50)
-
-		# logger_issue.debug(f"gst amount : {gst_amount} ==== gold rate : {billing_gold_rate} === amount_without_gst : {amount_without_gst} ==  voucher_billing_dept_cat_type : {voucher_billing_dept_cat_type}")
 	
+		rate_per_gram = rate_per_gram - making_rate_per_gram
+		backup_making_rate_per_gram = making_rate_per_gram
+		backup_making_charges = making_charges
+	else:
+		rate_per_cut = float(total_net_wt) * (float(making_purity)/100)
+		rate_cut = float(total_fine) - rate_per_cut
+		gold_rate = self.gold_rate
+		if self.gold_rate_purity == 99.500:
+			gold_rate = (gold_rate/99.5)*100
 
-		# print("billing_gold_rate")
-		# print(billing_gold_rate)
-		self.gold_rate_with_gst = billing_gold_rate + gst_amount
+		making_charges = float(rate_cut) * float(gold_rate)
+		other_charges = (float(self.total_hallmark_amount or 0) + float(self.total_logistic_amount or 0) + float(self.total_other_charge or 0) + float(self.discount_amount or 0))
+		making_charges = (making_charges + other_charges)
+		making_rate_per_gram = float(making_charges) / float(total_net_wt)
+		backup_making_rate_per_gram = making_rate_per_gram
+		backup_making_charges = float(total_net_wt) * making_rate_per_gram;
 
-		# Making charge #
-		rate_per_gram = float(amount_without_gst) / float(total_net_wt)
+	self.making_charges = making_charges
+	self.making_rate_per_gram = making_rate_per_gram
+	self.backup_making_rate_per_gram = backup_making_rate_per_gram
+	self.backup_making_charges = backup_making_charges
 
-		rate_per_cut = 0
-		rate_cut = 0
-		making_charges = 0
-		making_rate_per_gram = 0
-		backup_making_rate_per_gram = 0
-		backup_making_charges = 0
-
-		if self.display_making_charges == 1:
-			rate_per_cut = total_net_wt * (making_purity/100)
-			rate_cut = total_fine - rate_per_cut
-			gold_rate = self.gold_rate
-			if float(self.gold_rate_purity or 0) == 99.500:
-				gold_rate = (gold_rate/99.5)*100
-
-			making_charges = rate_cut * gold_rate
-
-			other_charges = (
-				float(self.total_hallmark_amount or 0) + 
-				float(self.total_logistic_amount or 0) + 
-				float(self.total_other_charge or 0) +
-				float(self.discount_amount or 0)
-			)
-			making_charges = float(making_charges) + float(other_charges)
-
-			making_rate_per_gram = making_charges / total_net_wt
-
-			billing_gold_rate = float(billing_gold_rate) - float(making_rate_per_gram)
-			self.billing_gold_rate = billing_gold_rate
-		
-			rate_per_gram = rate_per_gram - making_rate_per_gram
-			backup_making_rate_per_gram = making_rate_per_gram
-			backup_making_charges = making_charges
-		else:
-			rate_per_cut = float(total_net_wt) * (float(making_purity)/100)
-			rate_cut = float(total_fine) - rate_per_cut
-			gold_rate = self.gold_rate
-			if self.gold_rate_purity == 99.500:
-				gold_rate = (gold_rate/99.5)*100
-
-			making_charges = float(rate_cut) * float(gold_rate)
-			other_charges = (float(self.total_hallmark_amount or 0) + float(self.total_logistic_amount or 0) + float(self.total_other_charge or 0) + float(self.discount_amount or 0))
-			making_charges = (making_charges + other_charges)
-			making_rate_per_gram = float(making_charges) / float(total_net_wt)
-			backup_making_rate_per_gram = making_rate_per_gram
-			backup_making_charges = float(total_net_wt) * making_rate_per_gram;
-
-		self.making_charges = making_charges
-		self.making_rate_per_gram = making_rate_per_gram
-		self.backup_making_rate_per_gram = backup_making_rate_per_gram
-		self.backup_making_charges = backup_making_charges
-
-		# End of Making charge #
-
-	def on_submit(self):
-		self.billing_status = 'approve'
+	# End of Making charge #
 
 @frappe.whitelist()
 def submit_doc(doc):
@@ -245,7 +239,6 @@ def make_sales_invoice(source_name, target_doc=None):
 				company=get_default_company(),
 				item_code="MakingCharges"
 			).get("message")
-			frappe.logger("utils").exception(item_details)
 			target.append("items", {
 					"qty": 1,
 					"custom_pieces" : total_pcs,
@@ -267,7 +260,8 @@ def make_sales_invoice(source_name, target_doc=None):
 					"billing_gold_rate": "custom_gold_rate",
 					"gold_rate_with_gst": "custom_gold_rate__with_gst",
 					"sub_account":"customer_address",
-					"shipping_to_address": "shipping_address_name"
+					"shipping_to_address": "shipping_address_name",
+					"name": "custom_sales_issue_voucher"
 				}},
 		},
 		target_doc,
@@ -282,17 +276,19 @@ def get_default_company():
     return default_company
 
 @frappe.whitelist()
-def get_item_details(company=None, item_code = None):
+def get_item_details(company=None, item_code = None, sales_issue_voucher=None):
 	company = frappe.form_dict.company or company
 	item_code = frappe.form_dict.item_code or item_code
 	item_details = frappe.get_value("Item", item_code, "*", as_dict=True)
 	frappe.logger("utils").exception(item_details)
 	company = frappe.get_value("Company", company, "*", as_dict=True)
+	rate = frappe.get_value("Sales Issue Voucher", sales_issue_voucher, 'billing_gold_rate')
 	item_details_dict = {
 		"stock_uom": item_details.get("stock_uom"),
 		"item_name": item_details.get("item_name"),
 		"income_account": company.get("default_income_account"),
-		"cost_center": company.get("cost_center")
+		"cost_center": company.get("cost_center"),
+		"rate": rate
 	}
 	frappe.response['message'] = item_details_dict
 
