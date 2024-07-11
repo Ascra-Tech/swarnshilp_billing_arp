@@ -129,6 +129,9 @@ doc_events = {
 	"Sales Invoice": {
 		"before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.before_save"
 	},
+  "Shipment": {
+    "on_submit": "ascra_billing.ascra_billing.doc_events.shipment.send_sms_after_submit"
+  },
   # "Delivery Note": {
   #   "before_save": "ascra_billing.ascra_billing.doc_events.delivery_note.before_save"
 	# }
