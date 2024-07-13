@@ -104,7 +104,7 @@ def get_address_by_account_code():
 
 
 @frappe.whitelist()
-def make_sales_invoice(source_name, target_doc=None):
+def make_purchase_invoice(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc
 
 	def post_process(source, target):
@@ -158,7 +158,7 @@ def make_sales_invoice(source_name, target_doc=None):
 		"Sales Receipt Voucher",
 		source_name,
 		{
-			"Sales Receipt Voucher": {"doctype": "Sales Invoice",
+			"Sales Receipt Voucher": {"doctype": "Purchase Invoice",
 			"field_map": {
 					"billing_gold_rate": "custom_gold_rate",
 					"gold_rate_with_gst": "custom_gold_rate__with_gst",

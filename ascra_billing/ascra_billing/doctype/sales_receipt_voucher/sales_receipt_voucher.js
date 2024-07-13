@@ -85,9 +85,9 @@ function setQueryFilter(frm){
 }
 
 function addSIButton(frm){
-    frm.add_custom_button(__("Create Sales Invoice"), () =>
+    frm.add_custom_button(__("Create Purchase Invoice"), () =>
         frappe.model.open_mapped_doc({
-			method: "ascra_billing.ascra_billing.doctype.sales_receipt_voucher.sales_receipt_voucher.make_sales_invoice",
+			method: "ascra_billing.ascra_billing.doctype.sales_receipt_voucher.sales_receipt_voucher.make_purchase_invoice",
 			frm: frm,
 		}),
     );
@@ -103,7 +103,7 @@ function addActionButton(frm){
 
 
         frappe.model.open_mapped_doc({
-			method: "ascra_billing.ascra_billing.doctype.sales_receipt_voucher.sales_receipt_voucher.make_sales_invoice",
+			method: "ascra_billing.ascra_billing.doctype.sales_receipt_voucher.sales_receipt_voucher.make_purchase_invoice",
 			frm: frm,
 		})
 
