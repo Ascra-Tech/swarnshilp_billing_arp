@@ -31,7 +31,7 @@
   "tax_type_billing",
   "discount_amount",
   "column_break_azpw",
-  "gold_purity",
+  "gold_rate_purity",
   "total_hallmark_charge",
   "tcs_amount",
   "gold_rate_billing",
@@ -202,11 +202,6 @@
   {
    "fieldname": "column_break_azpw",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "gold_purity",
-   "fieldtype": "Float",
-   "label": "Gold Purity"
   },
   {
    "fieldname": "total_hallmark_charge",
@@ -443,12 +438,17 @@
    "fieldname": "total_hallmark_amount",
    "fieldtype": "Float",
    "label": "Total Hallmark Amount"
+  },
+  {
+   "fieldname": "gold_rate_purity",
+   "fieldtype": "Float",
+   "label": "Gold Rate Purity"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-15 18:40:14.389008",
+ "modified": "2024-07-15 19:02:22.589600",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
