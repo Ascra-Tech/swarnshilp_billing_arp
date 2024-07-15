@@ -446,8 +446,9 @@
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2024-07-15 14:56:45.657047",
+ "modified": "2024-07-15 18:40:14.389008",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
