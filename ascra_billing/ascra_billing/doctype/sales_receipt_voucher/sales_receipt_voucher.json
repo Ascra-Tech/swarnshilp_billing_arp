@@ -58,15 +58,10 @@
   "total_hallmark_amount",
   "section_break_eorj",
   "billing_notes",
-  "generate_bill_type",
   "column_break_rlqz",
   "voucher_billing_dept_cat_type",
   "column_break_tgyh",
-  "sub_account",
-  "shipping_to_address",
   "column_break_yuue",
-  "godown_bill",
-  "display_making_charges",
   "column_break_vsot",
   "billing_status",
   "billing_calculation_section",
@@ -338,12 +333,6 @@
    "label": "Notes"
   },
   {
-   "fieldname": "generate_bill_type",
-   "fieldtype": "Select",
-   "label": "Generate Bill Type",
-   "options": "default\nitems"
-  },
-  {
    "fieldname": "column_break_rlqz",
    "fieldtype": "Column Break"
   },
@@ -351,34 +340,15 @@
    "fieldname": "voucher_billing_dept_cat_type",
    "fieldtype": "Select",
    "label": "Category",
-   "options": "Issue Voucher\nOn Approval Issue\nSale Bill\nLabour Bill\nHallmark Issue\nSales Debit Note\nPurchase Debit Note"
+   "options": "Receipt Voucher\nPurchase Bill\nSales Return\nOn Approval Receipt\nHallmark Receipt\nOrder Memo\nPurchase Debit Note\nPurchas Debit Note"
   },
   {
    "fieldname": "column_break_tgyh",
    "fieldtype": "Column Break"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "sub_account",
-   "fieldtype": "Link",
-   "label": "Sub Account",
-   "options": "Address"
-  },
-  {
    "fieldname": "column_break_yuue",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "godown_bill",
-   "fieldtype": "Check",
-   "label": "Godown Bill"
-  },
-  {
-   "default": "0",
-   "fieldname": "display_making_charges",
-   "fieldtype": "Check",
-   "label": "Display Making Charges"
   },
   {
    "fieldname": "column_break_vsot",
@@ -456,13 +426,6 @@
    "label": "Gold Rate"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "shipping_to_address",
-   "fieldtype": "Link",
-   "label": "Shipping To Address",
-   "options": "Address"
-  },
-  {
    "fieldname": "column_break_oial",
    "fieldtype": "Column Break"
   },
@@ -484,7 +447,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-01 21:13:18.271549",
+ "modified": "2024-07-15 14:56:45.657047",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
