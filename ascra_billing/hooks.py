@@ -29,9 +29,10 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {
-                "Sales Invoice" : "public/js/sales_invoice.js",
-                "Delivery Note" : "public/js/delivery_note.js",
-              }
+    "Sales Invoice": "public/js/sales_invoice.js",
+    "Delivery Note": "public/js/delivery_note.js",
+    "Purchase Invoice": "public/js/purchase_invoice.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -126,18 +127,18 @@ doctype_js = {
 # Hook on document methods and events
 
 doc_events = {
-	"Sales Invoice": {
-		"before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.before_save"
-	},
-  "Purchase Invoice": {
-    "before_save": "ascra_billing.ascra_billing.doc_events.purchase_invoice.before_save"
-  },
-  "Shipment": {
-    "on_submit": "ascra_billing.ascra_billing.doc_events.shipment.send_sms_after_submit"
-  },
-  # "Delivery Note": {
-  #   "before_save": "ascra_billing.ascra_billing.doc_events.delivery_note.before_save"
-	# }
+    "Sales Invoice": {
+        "before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.before_save"
+    },
+    "Purchase Invoice": {
+        "before_save": "ascra_billing.ascra_billing.doc_events.purchase_invoice.before_save"
+    },
+    "Shipment": {
+        "on_submit": "ascra_billing.ascra_billing.doc_events.shipment.send_sms_after_submit"
+    },
+    # "Delivery Note": {
+    #   "before_save": "ascra_billing.ascra_billing.doc_events.delivery_note.before_save"
+    # }
 }
 
 # Scheduled Tasks
@@ -170,7 +171,7 @@ doc_events = {
 # ------------------------------
 #
 override_whitelisted_methods = {
-	"erpnext.accounts.doctype.sales_invoice.sales_invoice.make_delivery_note": "ascra_billing.ascra_billing.doc_events.sales_invoice.make_delivery_note"
+    "erpnext.accounts.doctype.sales_invoice.sales_invoice.make_delivery_note": "ascra_billing.ascra_billing.doc_events.sales_invoice.make_delivery_note"
 }
 #
 # each overriding function accepts a `data` argument;
@@ -238,20 +239,8 @@ override_whitelisted_methods = {
 # }
 
 fixtures = [
-       {
-         "dt": "Custom Field", 
-         "filters": [["module", "in", ["Ascra Billing"]]]
-      },
-      {
-        "dt": "Property Setter", 
-        "filters": [["module", "in", ["Ascra Billing"]]]
-      },
-      {
-        "dt": "Item", 
-        "filters": [["name", "in", ["MakingCharges"]]]
-      },
-      {
-        "dt": "GST HSN Code", 
-        "filters": [["name", "in", ["12345678"]]]
-      },
+    {"dt": "Custom Field", "filters": [["module", "in", ["Ascra Billing"]]]},
+    {"dt": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
+    {"dt": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
+    {"dt": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
 ]
