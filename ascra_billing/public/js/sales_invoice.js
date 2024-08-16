@@ -62,3 +62,40 @@ frappe.ui.form.on('Sales Invoice Item', {
 		}
 	},
 })
+
+frappe.ui.form.on('Sales Invoice', {
+    refresh: function(frm) {
+        update_tcs_payable(frm);
+    },
+
+    validate : function(frm) {
+        update_tcs_payable(frm);
+    }
+});
+
+function update_tcs_payable(frm) {
+    // Loop through the taxes and charges table
+    // frappe.msgprint("oooo"+frm.doc.custom_sales_type);
+    if ( frm.doc.custom_sales_type=="Sale Bill" || frm.doc.custom_sales_type=="On Approval Issue" || frm.doc.custom_sales_type=="Issue Voucher" || frm.doc.custom_sales_type=="Hallmark Issue" || frm.doc.custom_sales_type=="Delivery Challan") {
+        frm.doc.taxes.forEach(function(tax) {
+            // Check if the tax entry is TCS Payable
+            if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
+                // Set both rate and amount to 0
+                frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
+                frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
+            }
+            
+            if (tax.account_head === 'TCS Payable - ATL') {  // Ensure this matches the exact account name
+                // Set both rate and amount to 0
+                frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
+                frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
+            }
+        });
+        // Refresh the field to reflect changes
+        frm.refresh_field('taxes_and_charges');
+    }
+}
+
+
+
+
