@@ -163,4 +163,4 @@ def validate_account_block_status(doc, method):
     if customer:
         customer_doc = frappe.get_doc("Supplier", customer)
         if customer_doc.custom_block_account :
-            frappe.throw(f"Cannot save Sales Invoice. Customer '{customer}' is blocked ('{customer_doc.custom_reason}')")
+            frappe.throw(f"Cannot save Purchase Invoice. Customer '{customer}' is blocked ('{customer_doc.custom_reason}')")
