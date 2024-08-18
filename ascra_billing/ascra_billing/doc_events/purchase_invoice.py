@@ -158,9 +158,9 @@ def get_item_details(company=None, item_code = None):
 
 @frappe.whitelist()
 def validate_account_block_status(doc, method):
-    customer = doc.customer
+    supplier = doc.supplier
     
-    if customer:
-        customer_doc = frappe.get_doc("Supplier", customer)
-        if customer_doc.custom_block_account :
-            frappe.throw(f"Cannot save Purchase Invoice. Customer '{customer}' is blocked ('{customer_doc.custom_reason}')")
+    if supplier:
+        supplier_doc = frappe.get_doc("Supplier", supplier)
+        if supplier_doc.custom_block_account :
+            frappe.throw(f"Cannot save Purchase Invoice. Customer '{supplier}' is blocked ('{supplier_doc.custom_reason}')")

@@ -134,7 +134,7 @@ doc_events = {
         "before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.validate_account_block_status"
     },
     "Purchase Invoice": {
-        "validate": "ascra_billing.ascra_billing.doc_events.purchase_invoice.before_save",
+        "validate": "ascra_billing.ascra_billing.doc_events.purchase_invoice.validate_account_block_status",
         "before_save": "ascra_billing.ascra_billing.doc_events.purchase_invoice.before_save"
     },
     "Shipment": {
