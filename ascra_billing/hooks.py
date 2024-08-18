@@ -130,9 +130,11 @@ doctype_list_js = {"Sales Invoice" : "public/js/sales_invoice_list.js"}
 
 doc_events = {
     "Sales Invoice": {
-        "before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.before_save"
+        "validate": "ascra_billing.ascra_billing.doc_events.sales_invoice.before_save",
+        "before_save": "ascra_billing.ascra_billing.doc_events.sales_invoice.validate_account_block_status"
     },
     "Purchase Invoice": {
+        "validate": "ascra_billing.ascra_billing.doc_events.purchase_invoice.before_save",
         "before_save": "ascra_billing.ascra_billing.doc_events.purchase_invoice.before_save"
     },
     "Shipment": {

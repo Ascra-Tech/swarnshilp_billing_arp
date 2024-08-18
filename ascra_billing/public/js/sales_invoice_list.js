@@ -68,7 +68,6 @@ frappe.listview_settings['Sales Invoice'] = {
             //     $(this).css('background-color', 'green');
             // }
             var cancel = $(this).find('.filterable[data-filter="docstatus,=,2"]').length > 0;
-            console.log(cancel)
             if (cancel) {
                 // $(this).css('background-color', 'red');
                 // $(this).css('background-color', '#b52a2a');

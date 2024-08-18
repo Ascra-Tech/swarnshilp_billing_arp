@@ -42,6 +42,8 @@
   "logistic_amount",
   "tax_type_accounting_to_billing",
   "internal_narration",
+  "currently_updated",
+  "delete_status",
   "column_break_nqcv",
   "select_tax_type",
   "logistic_account_name",
@@ -482,12 +484,24 @@
    "fieldname": "total_logistic_amount",
    "fieldtype": "Float",
    "label": "Total Logistic Amount"
+  },
+  {
+   "fieldname": "currently_updated",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Currently updated"
+  },
+  {
+   "fieldname": "delete_status",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Delete status"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-26 17:31:03.717371",
+ "modified": "2024-08-16 17:52:08.456143",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",
