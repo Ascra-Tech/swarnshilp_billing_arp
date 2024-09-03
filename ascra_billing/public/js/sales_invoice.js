@@ -75,8 +75,8 @@ frappe.ui.form.on('Sales Invoice', {
 
 function update_tcs_payable(frm) {
     // Loop through the taxes and charges table
-    // frappe.msgprint("oooo"+frm.doc.custom_sales_type);
-    if ( frm.doc.custom_sales_type=="Sale Bill" || frm.doc.custom_sales_type=="On Approval Issue" || frm.doc.custom_sales_type=="Issue Voucher" || frm.doc.custom_sales_type=="Hallmark Issue" || frm.doc.custom_sales_type=="Delivery Challan") {
+    // frappe.msgprint("oooo"+frm.doc.voucher_billing_dept_cat_type);
+    if ( frm.doc.voucher_billing_dept_cat_type=="Sale Bill" || frm.doc.voucher_billing_dept_cat_type=="On Approval Issue" || frm.doc.voucher_billing_dept_cat_type=="Issue Voucher" || frm.doc.voucher_billing_dept_cat_type=="Hallmark Issue" || frm.doc.voucher_billing_dept_cat_type=="Delivery Challan") {
         frm.doc.taxes.forEach(function(tax) {
             // Check if the tax entry is TCS Payable
             if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
