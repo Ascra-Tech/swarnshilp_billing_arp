@@ -93,7 +93,7 @@ def get_address_by_account_code():
 	if not frappe.form_dict.account_code:
 		frappe.response['message'] = []
 		
-	cust = frappe.db.get_value("Customer", {"custom_account_code": acc_code})
+	cust = frappe.db.get_value("Supplier", {"custom_account_code": acc_code})
 
 	if not cust:
 		frappe.response['message'] = []
