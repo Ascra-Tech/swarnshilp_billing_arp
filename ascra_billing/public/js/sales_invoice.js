@@ -76,7 +76,9 @@ frappe.ui.form.on('Sales Invoice', {
 function update_tcs_payable(frm) {
     // Loop through the taxes and charges table
     // frappe.msgprint("oooo"+frm.doc.voucher_billing_dept_cat_type);
-    if ( frm.doc.voucher_billing_dept_cat_type=="Sale Bill" || frm.doc.voucher_billing_dept_cat_type=="On Approval Issue" || frm.doc.voucher_billing_dept_cat_type=="Issue Voucher" || frm.doc.voucher_billing_dept_cat_type=="Hallmark Issue" || frm.doc.voucher_billing_dept_cat_type=="Delivery Challan") {
+    // frm.doc.voucher_billing_dept_cat_type=="Sale Bill" || 
+
+    if (frm.doc.voucher_billing_dept_cat_type=="On Approval Issue" || frm.doc.voucher_billing_dept_cat_type=="Issue Voucher" || frm.doc.voucher_billing_dept_cat_type=="Hallmark Issue" || frm.doc.voucher_billing_dept_cat_type=="Delivery Challan") {
         frm.doc.taxes.forEach(function(tax) {
             // Check if the tax entry is TCS Payable
             if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
@@ -93,6 +95,35 @@ function update_tcs_payable(frm) {
         });
         // Refresh the field to reflect changes
         frm.refresh_field('taxes_and_charges');
+    }
+    else {
+        let customer_id = frm.doc.name; // Current customer record
+
+        if (customer_id) {
+            frappe.db.get_value('Customer', customer_id, 'pan', (r) => {
+                if (r && r.pan) {
+                    if(r.pan=="AAPCS1960H") {
+                        frm.doc.taxes.forEach(function(tax) {
+                            // Check if the tax entry is TCS Payable
+                            if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
+                                // Set both rate and amount to 0
+                                frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
+                                frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
+                            }
+                            
+                            if (tax.account_head === 'TCS Payable - ATL') {  // Ensure this matches the exact account name
+                                // Set both rate and amount to 0
+                                frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
+                                frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
+                            }
+                        });
+                        // Refresh the field to reflect changes
+                        frm.refresh_field('taxes_and_charges');
+                    }
+                } 
+            });
+        }
+
     }
 }
 
