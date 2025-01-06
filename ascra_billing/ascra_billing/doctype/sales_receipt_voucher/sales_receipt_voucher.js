@@ -63,13 +63,13 @@ function setQueryFilter(frm){
          },
          callback: (r)=> {
          var address = r.message;
-         frm.set_query("sub_account", function() {
-             return {
-                 filters: {
-                         name: ["in", address],
-                 },
-             };
-         });
+//         frm.set_query("sub_account", function() {
+//             return {
+//                 filters: {
+//                         name: ["in", address],
+//                 },
+//             };
+//         });
 
          frm.set_query("shipping_to_address", function() {
             return {

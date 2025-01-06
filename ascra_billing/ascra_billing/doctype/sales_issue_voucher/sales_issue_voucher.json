@@ -343,7 +343,7 @@
    "fieldname": "sub_account",
    "fieldtype": "Link",
    "label": "Sub Account",
-   "options": "Address"
+   "options": "Customer"
   },
   {
    "fieldname": "column_break_yuue",
@@ -501,7 +501,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-16 17:52:08.456143",
+ "modified": "2025-01-06 11:46:00.049007",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Issue Voucher",

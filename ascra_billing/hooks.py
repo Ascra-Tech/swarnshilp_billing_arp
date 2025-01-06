@@ -140,9 +140,9 @@ doc_events = {
     "Shipment": {
         "on_submit": "ascra_billing.ascra_billing.doc_events.shipment.send_sms_after_submit"
     },
-    # "Delivery Note": {
-    #   "before_save": "ascra_billing.ascra_billing.doc_events.delivery_note.before_save"
-    # }
+    "Customer": {
+      "before_save": "ascra_billing.ascra_billing.doc_events.customer.before_save"
+    }
 }
 
 # Scheduled Tasks
@@ -243,8 +243,12 @@ override_whitelisted_methods = {
 # }
 
 fixtures = [
-    {"dt": "Custom Field", "filters": [["module", "in", ["Ascra Billing"]]]},
-    {"dt": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
-    {"dt": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
-    {"dt": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
+    {"doctype": "Custom Field", "filters": [["module", "in", ["Ascra Billing"]]]},
+    {"doctype": "Custom Field", "filters": [["name", "in", ["Customer-custom_account_sub_code",
+                                                            "Customer-custom_account_code",
+                                                            "Item-custom_other_department",
+                                                            "Sales Invoice-custom_other_department"]]]},
+    {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
+    {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
+    {"doctype": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
 ]

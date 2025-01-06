@@ -164,3 +164,24 @@ def validate_account_block_status(doc, method):
         customer_doc = frappe.get_doc("Customer", customer)
         if customer_doc.custom_block_account :
             frappe.throw(f"Cannot save Sales Invoice. Customer '{customer}' is blocked ('{customer_doc.custom_reason}')")
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def filter_items_by_department(doctype, txt, searchfield, start, page_len, filters):
+    department = filters.get("department")
+    if not department:
+        return []
+
+    print("dddddddeeeeeeeeeee",department)
+    # Query to check if the department exists in the Table MultiSelect field
+    return frappe.db.sql("""
+        SELECT name
+        FROM `tabItem`
+        WHERE EXISTS (
+            SELECT 1 FROM `tabItem Other Department` 
+            WHERE `tabItem Other Department`.parent = `tabItem`.name
+            AND `tabItem Other Department`.other_department = %s
+        )
+        AND name LIKE %s
+        LIMIT %s, %s
+    """, (department, f"%{txt}%", start, page_len))

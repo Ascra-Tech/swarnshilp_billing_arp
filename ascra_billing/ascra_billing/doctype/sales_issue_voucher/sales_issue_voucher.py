@@ -205,6 +205,25 @@ def get_address_by_account_code():
 def make_sales_invoice(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc
 
+	def set_missing_values(source, target):
+		# Example condition: Set customer field based on a field value
+		if source.sub_account:
+			target.customer = source.sub_account
+		elif source.account_code:
+			target.customer = source.account_code
+
+		if source.sub_account:
+			add_filter = [["Dynamic Link", "link_name", "=", source.sub_account]]
+			address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
+			target.customer_address = address [0]
+		elif source.account_code:
+			cust = frappe.db.get_value("Customer", {"custom_account_code": source.account_code,"custom_account_sub_code": None})
+			if cust:
+				add_filter = [["Dynamic Link", "link_name", "=", cust]]
+				address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
+				target.customer_address = address[0]
+		target.custom_other_department = source.item_details[0].get("department_name")
+
 	def post_process(source, target):
 		target.posting_date = frappe.utils.now_datetime()
 
@@ -212,7 +231,9 @@ def make_sales_invoice(source_name, target_doc=None):
 		total_net_wt = 0
 		total_pcs = 0
 		total_fine = 0
-
+		for item in source.item_details:
+			target.custom_other_department = item.get('department_name')
+			break
 		if source.generate_bill_type == 'items':
 			for item in source.item_details:
 				target.append("items", {
@@ -223,6 +244,7 @@ def make_sales_invoice(source_name, target_doc=None):
 				})
 		else:
 			department = source.item_details[0].get("department_name")
+			target.custom_other_department = source.item_details[0].get("department_name")
 			for item in source.item_details:
 				total_net_wt += float(item.net_wt)
 				total_pcs += float(item.pieces)
@@ -259,12 +281,12 @@ def make_sales_invoice(source_name, target_doc=None):
 			"field_map": {
 					"billing_gold_rate": "custom_gold_rate",
 					"gold_rate_with_gst": "custom_gold_rate__with_gst",
-					"sub_account":"customer_address",
 					"shipping_to_address": "shipping_address_name",
 					"name": "custom_sales_issue_voucher"
 				}},
 		},
 		target_doc,
+		set_missing_values,
 		post_process,
 	)
 
