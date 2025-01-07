@@ -88,6 +88,19 @@ def perform_calculations(self):
 
 	self.total_fine_amount = round(total_fine_amount)
 
+	if(self.gst_percentage!="") :
+		if(self.total_other_charge!="") :
+			self.custom_other_charges_without_gst = float(self.total_other_charge) - ((float(self.total_other_charge) * float(self.gst_percentage))/100);
+
+		if(self.total_logistic_amount!="") :
+			self.custom_logistic_amount_without_gst = float(self.total_logistic_amount) - ((float(self.total_logistic_amount) * float(self.gst_percentage))/100);
+		
+
+		if(self.total_hallmark_amount!="") :
+			self.custom_hallmark_amount_without_gst = float(self.total_hallmark_amount) - ((float(self.total_hallmark_amount) * float(self.gst_percentage))/100);
+		
+	
+
 	amount_tcs_tds = (
 		total_fine_amount + 
 		float(self.total_hallmark_amount or 0) + 
@@ -142,12 +155,19 @@ def perform_calculations(self):
 
 		making_charges = rate_cut * gold_rate
 
+		# other_charges = (
+		# 	float(self.total_hallmark_amount or 0) + 
+		# 	float(self.total_logistic_amount or 0) + 
+		# 	float(self.total_other_charge or 0) +
+		# 	float(self.discount_amount or 0)
+		# )
 		other_charges = (
-			float(self.total_hallmark_amount or 0) + 
-			float(self.total_logistic_amount or 0) + 
-			float(self.total_other_charge or 0) +
+			float(self.custom_hallmark_amount_without_gst or 0) + 
+			float(self.custom_logistic_amount_without_gst or 0) + 
+			float(self.custom_other_charges_without_gst or 0) +
 			float(self.discount_amount or 0)
 		)
+
 		making_charges = float(making_charges) + float(other_charges)
 
 		making_rate_per_gram = making_charges / total_net_wt
@@ -160,13 +180,14 @@ def perform_calculations(self):
 		backup_making_charges = making_charges
 	else:
 		rate_per_cut = float(total_net_wt) * (float(making_purity)/100)
-		rate_cut = float(total_fine) - rate_per_cut
+		rate_cut = float(total_fine) - float(rate_per_cut)
 		gold_rate = self.gold_rate
 		if self.gold_rate_purity == 99.500:
 			gold_rate = (gold_rate/99.5)*100
 
-		making_charges = float(rate_cut) * float(gold_rate)
-		other_charges = (float(self.total_hallmark_amount or 0) + float(self.total_logistic_amount or 0) + float(self.total_other_charge or 0) + float(self.discount_amount or 0))
+		making_charges = float(rate_cut or 0) * float(gold_rate or 0)
+		# other_charges = (float(self.total_hallmark_amount or 0) + float(self.total_logistic_amount or 0) + float(self.total_other_charge or 0) + float(self.discount_amount or 0))
+		other_charges = (float(self.custom_hallmark_amount_without_gst or 0) + float(self.custom_logistic_amount_without_gst or 0) + float(self.custom_other_charges_without_gst or 0) + float(self.discount_amount or 0))
 		making_charges = (making_charges + other_charges)
 		making_rate_per_gram = float(making_charges) / float(total_net_wt)
 		backup_making_rate_per_gram = making_rate_per_gram
@@ -176,6 +197,10 @@ def perform_calculations(self):
 	self.making_rate_per_gram = making_rate_per_gram
 	self.backup_making_rate_per_gram = backup_making_rate_per_gram
 	self.backup_making_charges = backup_making_charges
+	self.custom_other_charges_without_gst
+	self.custom_logistic_amount_without_gst
+	self.custom_hallmark_amount_without_gst
+
 
 	# End of Making charge #
 
@@ -261,7 +286,10 @@ def make_sales_invoice(source_name, target_doc=None):
 					"gold_rate_with_gst": "custom_gold_rate__with_gst",
 					"sub_account":"customer_address",
 					"shipping_to_address": "shipping_address_name",
-					"name": "custom_sales_issue_voucher"
+					"name": "custom_sales_issue_voucher",
+					"custom_other_charges_without_gst": "custom_other_charges_without_gst",
+					"custom_hallmark_amount_without_gst": "custom_hallmark_amount_without_gst",
+					"custom_logistic_amount_without_gst": "custom_logistic_amount_without_gst"
 				}},
 		},
 		target_doc,

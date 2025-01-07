@@ -4,8 +4,13 @@ from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt
 
 
+# def before_save(self, method):
+# 	pass
 def before_save(self, method):
-	pass
+	if self.custom_roundup_total == 1 :
+		self.rounded_total = round(self.rounded_total)
+	if self.custom_roundup_total == 1 :
+		self.grand_total = round(self.grand_total)
 
 # ascra_billing.ascra_billing.doc_events.sales_invoice.make_delivery_note
 

@@ -1,0 +1,111 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-08 18:08:22.192763",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tds_column",
+  "invoice_number",
+  "account_code",
+  "pan_no",
+  "total_amount",
+  "amount",
+  "reason",
+  "column_break_wcqm",
+  "invoice_date",
+  "account_name",
+  "account_type",
+  "tds_amt",
+  "bill_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "tds_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_number",
+   "fieldtype": "Data",
+   "label": "Invoice Number"
+  },
+  {
+   "fieldname": "account_code",
+   "fieldtype": "Data",
+   "label": "Account Code"
+  },
+  {
+   "fieldname": "pan_no",
+   "fieldtype": "Data",
+   "label": "Pan No"
+  },
+  {
+   "fieldname": "column_break_wcqm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "account_name",
+   "fieldtype": "Data",
+   "label": "Account Name"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Float",
+   "label": "Total Amount"
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Data",
+   "label": "Account Type"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "tds_amt",
+   "fieldtype": "Float",
+   "label": "TDS Amt"
+  },
+  {
+   "fieldname": "bill_type",
+   "fieldtype": "Data",
+   "label": "Bill type"
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Text",
+   "label": "Reason"
+  },
+  {
+   "fieldname": "invoice_date",
+   "fieldtype": "Date",
+   "label": "Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-08 20:58:30.276349",
+ "modified_by": "Administrator",
+ "module": "Ascra Billing",
+ "name": "Invoice TDS",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

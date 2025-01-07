@@ -140,6 +140,9 @@ doc_events = {
     "Shipment": {
         "on_submit": "ascra_billing.ascra_billing.doc_events.shipment.send_sms_after_submit"
     },
+    "Expense Claim": {
+        "before_save": "ascra_billing.ascra_billing.doc_events.expense_claim.before_save"
+    },
     # "Delivery Note": {
     #   "before_save": "ascra_billing.ascra_billing.doc_events.delivery_note.before_save"
     # }
@@ -148,23 +151,23 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"ascra_billing.tasks.all"
-# 	],
-# 	"daily": [
-# 		"ascra_billing.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"ascra_billing.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"ascra_billing.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"ascra_billing.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	# "all": [
+	# 	"ascra_billing.tasks.all"
+	# ],
+	"daily": [
+		"ascra_billing.ascra_billing.doc_events.cron_mark_attendance.cron_mark_attendance_today_date"
+	],
+	# "hourly": [
+	# 	"ascra_billing.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"ascra_billing.tasks.weekly"
+	# ],
+	# "monthly": [
+	# 	"ascra_billing.tasks.monthly"
+	# ],
+}
 
 # Testing
 # -------
@@ -247,4 +250,5 @@ fixtures = [
     {"dt": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"dt": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
     {"dt": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
+    {"dt": "Expense Claim", "filters": [["name", "in", ["MakingCharges"]]]},
 ]

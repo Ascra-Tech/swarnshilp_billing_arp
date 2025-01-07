@@ -100,28 +100,29 @@ function update_tcs_payable(frm) {
         let customer_id = frm.doc.name; // Current customer record
 
         if (customer_id) {
-            frappe.db.get_value('Customer', customer_id, 'pan', (r) => {
-                if (r && r.pan) {
-                    if(r.pan=="AAPCS1960H") {
-                        frm.doc.taxes.forEach(function(tax) {
-                            // Check if the tax entry is TCS Payable
-                            if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
-                                // Set both rate and amount to 0
-                                frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
-                                frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
-                            }
+            // frappe.db.get_value('Customer', customer_id, 'pan', (r) => {
+            //     if (r && r.pan) {
+            //         console.log(r.pan)
+            //         if(r.pan=="AAPCS1960H") {
+            //             frm.doc.taxes.forEach(function(tax) {
+            //                 // Check if the tax entry is TCS Payable
+            //                 if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
+            //                     // Set both rate and amount to 0
+            //                     frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
+            //                     frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
+            //                 }
                             
-                            if (tax.account_head === 'TCS Payable - ATL') {  // Ensure this matches the exact account name
-                                // Set both rate and amount to 0
-                                frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
-                                frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
-                            }
-                        });
-                        // Refresh the field to reflect changes
-                        frm.refresh_field('taxes_and_charges');
-                    }
-                } 
-            });
+            //                 if (tax.account_head === 'TCS Payable - ATL') {  // Ensure this matches the exact account name
+            //                     // Set both rate and amount to 0
+            //                     frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
+            //                     frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
+            //                 }
+            //             });
+            //             // Refresh the field to reflect changes
+            //             frm.refresh_field('taxes_and_charges');
+            //         }
+            //     } 
+            // });
         }
 
     }
