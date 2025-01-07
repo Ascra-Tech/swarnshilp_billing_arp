@@ -334,9 +334,9 @@
   },
   {
    "fieldname": "voucher_billing_dept_cat_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Category",
-   "options": "Receipt Voucher\nPurchase Bill\nSales Return\nOn Approval Receipt\nHallmark Receipt\nOrder Memo\nPurchase Debit Note\nPurchas Debit Note"
+   "options": "Sales Type"
   },
   {
    "fieldname": "column_break_tgyh",
@@ -455,7 +455,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-07 12:20:44.324339",
+ "modified": "2025-01-07 19:41:10.947490",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",

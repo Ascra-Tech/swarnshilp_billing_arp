@@ -8,7 +8,10 @@ def before_save(self, method):
     if self.custom_account_sub_code and self.custom_account_code:
         existing_acc_sub_code = frappe.get_all(
             "Customer",
-            filters={"custom_account_code": self.custom_account_code, "custom_account_sub_code": self.custom_account_sub_code}
+            filters={"custom_account_code": self.custom_account_code,
+                     "custom_account_sub_code": self.custom_account_sub_code,
+                     'name': ['!=', self.name]
+                     }
         )
         if existing_acc_sub_code:
             frappe.throw("Account Code and Account Sub code Already Exist")
@@ -16,7 +19,8 @@ def before_save(self, method):
         existing_acc_code = frappe.get_all(
             "Customer",
             filters={"custom_account_code": self.custom_account_code,
-                     'custom_account_sub_code':['is','not set']}
+                     'custom_account_sub_code': ['is','not set'],
+                     'name': ['!=', self.name]}
         )
         if existing_acc_code:
             frappe.throw("Account Code Already Exist")

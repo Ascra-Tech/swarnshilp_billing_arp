@@ -129,6 +129,7 @@ def make_purchase_invoice(source_name, target_doc=None):
 				if address:
 					target.customer_address = address[0]
 		target.custom_other_department = source.item_details[0].get("department_name")
+		target.custom_bill_type = source.gst_name
 	def post_process(source, target):
 		set_missing_values(source, target)
 		target.posting_date = frappe.utils.now_datetime()
