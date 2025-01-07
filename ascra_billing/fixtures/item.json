@@ -12,6 +12,8 @@
   "country_of_origin": "India",
   "create_new_batch": 0,
   "custom_department": null,
+  "custom_huid_narration": null,
+  "custom_other_department": [],
   "customer": null,
   "customer_code": "",
   "customer_items": [],

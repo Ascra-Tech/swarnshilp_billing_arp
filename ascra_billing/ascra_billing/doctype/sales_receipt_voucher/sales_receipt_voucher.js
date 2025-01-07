@@ -19,6 +19,16 @@ frappe.ui.form.on('Sales Receipt Voucher', {
 	},
     on_update(frm){
         console.log("Hey")
+    },
+    onload: function(frm){
+        frm.set_query("sub_account", function () {
+			return {
+				filters: {
+					'custom_account_sub_code': ['!=', ''],
+					'custom_account_code': frm.doc.account_code
+				},
+			};
+        });
     }
 
 })
@@ -63,13 +73,13 @@ function setQueryFilter(frm){
          },
          callback: (r)=> {
          var address = r.message;
-         frm.set_query("sub_account", function() {
-             return {
-                 filters: {
-                         name: ["in", address],
-                 },
-             };
-         });
+//         frm.set_query("sub_account", function() {
+//             return {
+//                 filters: {
+//                         name: ["in", address],
+//                 },
+//             };
+//         });
 
          frm.set_query("shipping_to_address", function() {
             return {
@@ -78,10 +88,17 @@ function setQueryFilter(frm){
                 },
             };
         });
-
-
-         }
+     }
      });
+
+     frm.set_query("sub_account", function () {
+			return {
+				filters: {
+					'custom_account_sub_code': ['!=', ''],
+					'custom_account_code': frm.doc.account_code
+				},
+			};
+    });
 }
 
 function addSIButton(frm){

@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "account_sub_code.-.####",
+ "creation": "2025-01-04 15:34:54.824520",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "account_code",
+  "account_sub_code",
+  "customer",
+  "active"
+ ],
+ "fields": [
+  {
+   "fieldname": "account_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Account Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_sub_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Account Sub Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "default": "0",
+   "fieldname": "active",
+   "fieldtype": "Check",
+   "label": "Active"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-06 10:43:17.300105",
+ "modified_by": "Administrator",
+ "module": "Ascra Billing",
+ "name": "Account Sub Code",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "account_sub_code",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

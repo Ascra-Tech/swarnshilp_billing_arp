@@ -61,6 +61,7 @@
   "column_break_rlqz",
   "voucher_billing_dept_cat_type",
   "column_break_tgyh",
+  "sub_account",
   "column_break_yuue",
   "column_break_vsot",
   "billing_status",
@@ -333,9 +334,9 @@
   },
   {
    "fieldname": "voucher_billing_dept_cat_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Category",
-   "options": "Receipt Voucher\nPurchase Bill\nSales Return\nOn Approval Receipt\nHallmark Receipt\nOrder Memo\nPurchase Debit Note\nPurchas Debit Note"
+   "options": "Sales Type"
   },
   {
    "fieldname": "column_break_tgyh",
@@ -443,12 +444,18 @@
    "fieldname": "gold_rate_purity",
    "fieldtype": "Float",
    "label": "Gold Rate Purity"
+  },
+  {
+   "fieldname": "sub_account",
+   "fieldtype": "Link",
+   "label": "Sub Account",
+   "options": "Supplier"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-15 19:02:22.589600",
+ "modified": "2025-01-07 19:41:10.947490",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
