@@ -210,30 +210,36 @@ def make_sales_invoice(source_name, target_doc=None):
 		if source.sub_account:
 			target.customer = source.sub_account
 		elif source.account_code:
-			target.customer = source.account_code
+			cust = frappe.db.get_value("Customer", {"custom_account_code": source.account_code})
+			if cust:
+				target.customer = cust
 
 		if source.sub_account:
 			add_filter = [["Dynamic Link", "link_name", "=", source.sub_account]]
 			address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
-			target.customer_address = address [0]
+			if address:
+				target.customer_address = address[0]
 		elif source.account_code:
 			cust = frappe.db.get_value("Customer", {"custom_account_code": source.account_code,"custom_account_sub_code": None})
 			if cust:
 				add_filter = [["Dynamic Link", "link_name", "=", cust]]
 				address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
-				target.customer_address = address[0]
+				if address:
+					target.customer_address = address[0]
 		target.custom_other_department = source.item_details[0].get("department_name")
 
 	def post_process(source, target):
+		set_missing_values(source,target)
+		print("----------1--------post process")
 		target.posting_date = frappe.utils.now_datetime()
 
 		source.item_details.pop() # Remove the last Total Element
 		total_net_wt = 0
 		total_pcs = 0
 		total_fine = 0
-		for item in source.item_details:
-			target.custom_other_department = item.get('department_name')
-			break
+		# for item in source.item_details:
+		# 	target.custom_other_department = item.get('department_name')
+		# 	break
 		if source.generate_bill_type == 'items':
 			for item in source.item_details:
 				target.append("items", {
@@ -242,6 +248,8 @@ def make_sales_invoice(source_name, target_doc=None):
 					"qty": item.net_wt,
 					"custom_pieces": item.pieces
 				})
+				print("----------1--------item addditiin")
+
 		else:
 			department = source.item_details[0].get("department_name")
 			target.custom_other_department = source.item_details[0].get("department_name")
@@ -255,7 +263,7 @@ def make_sales_invoice(source_name, target_doc=None):
 					"custom_pieces" : total_pcs,
 					"rate": source.billing_gold_rate
 				})
-
+			print("--------2----------item addditiin")
 		if source.display_making_charges:
 			item_details = get_item_details(
 				company=get_default_company(),
@@ -286,8 +294,7 @@ def make_sales_invoice(source_name, target_doc=None):
 				}},
 		},
 		target_doc,
-		set_missing_values,
-		post_process,
+		post_process
 	)
 
 	return doclist

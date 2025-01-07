@@ -171,8 +171,6 @@ def filter_items_by_department(doctype, txt, searchfield, start, page_len, filte
     department = filters.get("department")
     if not department:
         return []
-
-    print("dddddddeeeeeeeeeee",department)
     # Query to check if the department exists in the Table MultiSelect field
     return frappe.db.sql("""
         SELECT name

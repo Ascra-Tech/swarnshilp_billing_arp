@@ -10,23 +10,33 @@ frappe.ui.form.on('Purchase Invoice', {
             // }
         })
 
-        frm.set_query("item_code", "items", function (doc, cdt, cdn) {
-			let d = locals[cdt][cdn];
-			return {
-				filters: {
-                        custom_department: d.custom_department
-                    },
-			};
-		});
+//        frm.set_query("item_code", "items", function (doc, cdt, cdn) {
+//			let d = locals[cdt][cdn];
+//			return {
+//				filters: {
+//                        custom_department: d.custom_department
+//                    },
+//			};
+//		});
+//
+//        frm.set_query("custom_item", "items", function (doc, cdt, cdn) {
+//			let d = locals[cdt][cdn];
+//			return {
+//				filters: {
+//                        custom_department: d.custom_department
+//                    },
+//			};
+//		});
+        frm.fields_dict["items"].grid.get_field("custom_item").get_query = function(doc, cdt, cdn) {
+            let row = locals[cdt][cdn];
 
-        frm.set_query("custom_item", "items", function (doc, cdt, cdn) {
-			let d = locals[cdt][cdn];
-			return {
-				filters: {
-                        custom_department: d.custom_department
-                    },
-			};
-		});
+            return {
+                query: "ascra_billing.ascra_billing.doc_events.sales_invoice.filter_items_by_department",
+                filters: {
+                    department: frm.doc.custom_other_department
+                }
+            };
+        };
 
 	},
 	

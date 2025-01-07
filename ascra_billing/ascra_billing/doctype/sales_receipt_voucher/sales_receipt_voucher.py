@@ -107,9 +107,32 @@ def get_address_by_account_code():
 def make_purchase_invoice(source_name, target_doc=None):
 	from frappe.model.mapper import get_mapped_doc
 
-	def post_process(source, target):
-		target.posting_date = frappe.utils.now_datetime()
+	def set_missing_values(source, target):
+		# Example condition: Set customer field based on a field value
+		if source.sub_account:
+			target.supplier = source.sub_account
+		elif source.account_code:
+			supp = frappe.db.get_value("Supplier", {"custom_account_code": source.account_code})
+			if supp:
+				target.supplier = supp
 
+		if source.sub_account:
+			add_filter = [["Dynamic Link", "link_name", "=", source.sub_account]]
+			address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
+			if address:
+				target.customer_address = address[0]
+		elif source.account_code:
+			supp = frappe.db.get_value("Supplier", {"custom_account_code": source.account_code,"custom_account_sub_code": None})
+			if supp:
+				add_filter = [["Dynamic Link", "link_name", "=", supp]]
+				address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
+				if address:
+					target.customer_address = address[0]
+		target.custom_other_department = source.item_details[0].get("department_name")
+	def post_process(source, target):
+		set_missing_values(source, target)
+		target.posting_date = frappe.utils.now_datetime()
+		target.custom_other_department = source.item_details[0].get("department_name")
 		source.item_details.pop() # Remove the last Total Element
 		total_net_wt = 0
 		total_pcs = 0
@@ -167,7 +190,7 @@ def make_purchase_invoice(source_name, target_doc=None):
 				}},
 		},
 		target_doc,
-		post_process,
+		post_process
 	)
 
 	return doclist

@@ -142,6 +142,9 @@ doc_events = {
     },
     "Customer": {
       "before_save": "ascra_billing.ascra_billing.doc_events.customer.before_save"
+    },
+    "Supplier": {
+      "before_save": "ascra_billing.ascra_billing.doc_events.supplier.before_save"
     }
 }
 
@@ -247,7 +250,9 @@ fixtures = [
     {"doctype": "Custom Field", "filters": [["name", "in", ["Customer-custom_account_sub_code",
                                                             "Customer-custom_account_code",
                                                             "Item-custom_other_department",
-                                                            "Sales Invoice-custom_other_department"]]]},
+                                                            "Sales Invoice-custom_other_department",
+                                                            "Supplier-custom_account_sub_code",
+                                                            "Purchase Invoice-custom_other_department"]]]},
     {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
     {"doctype": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
