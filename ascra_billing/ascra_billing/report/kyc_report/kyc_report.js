@@ -9,5 +9,11 @@ frappe.query_reports["KYC Report"] = {
 			fieldtype: "Data",
 			default: "",
 		},
+		{
+			fieldname:"days",
+			label: __("No. Day Inactive Customer"),
+			fieldtype: "Data",
+			default: "",
+		},
 	]
 };

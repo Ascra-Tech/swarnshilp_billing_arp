@@ -31,3 +31,21 @@ frappe.query_reports["TDS Report"] = {
 		}
 	]
 };
+
+function lock_unlock(invoice_number,status) {
+	console.log("sdfsdf");
+    frappe.call({
+            method: 'ascra_billing.ascra_billing.doctype.invoice_tds.invoice_tds.update_data_lock_unlock',
+            args: {
+                invoice_number: invoice_number,
+                status: status
+            },
+            callback: function(response) {
+                if (response.message) {
+                    // Show a success message
+                    frappe.msgprint(__('Status updated to: ' + response.message.status));
+                    // frm.reload_doc();  // Reload the form to reflect the changes
+                }
+            }
+        });
+}

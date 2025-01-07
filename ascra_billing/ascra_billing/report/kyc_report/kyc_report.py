@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from datetime import datetime, timedelta
 
 
 def execute(filters=None):
@@ -87,6 +88,23 @@ def execute(filters=None):
 	if filters.account_name :
 		query_append = " tabCustomer.customer_name='"+filters.account_name+"'"
 
+	if filters.days :
+		# Get today's date
+		today = datetime.today()
+
+		# Define the number of days to subtract (e.g., 10 days)
+		# days_to_subtract = 10
+		days_to_subtract = int(filters.days)
+
+		# Subtract the days
+		new_date = today - timedelta(days=days_to_subtract)
+		from_inactive_date = new_date.date();
+		query_append = " tabCustomer.account_code NOT IN (select customer from `tabSales Invoice` where `tabSales Invoice`.`posting_date`>='"+str(from_inactive_date)+"')"
+		# print(query_append)
+		# Print the result
+		# print(f"Today's date: {today}")
+		# print(f"New date after subtracting {days_to_subtract} days: {new_date.date()}")
+
 	if query_append :
 		query_append = "where " + query_append 
 
@@ -100,6 +118,6 @@ def execute(filters=None):
 	# ,`tabCustomer`.`pan` as pan,`tabSales Invoice Item`.`gst_hsn_code` as hsn
 
 	# and `tabSales Taxes and Charges`.description='TDS Payable'
-
+	print("select tabCustomer.custom_account_code as customer_code,`tabCustomer`.`customer_name` as account_name,if(custom_kyc_certificate!='', 'YES', 'NO') as custom_kyc_certificate,if(custom_gst_certificate!='', 'YES', 'NO') as custom_gst_certificate,if(custom_tdstcs_certificate!='', 'YES', 'NO') as custom_tdstcs_certificate,if(custom_pan_card!='', 'YES', 'NO') as custom_pan_card,if(custom_hallmark_liacence!='', 'YES', 'NO') as custom_hallmark_liacence,if(custom_aadhar_card!='', 'YES', 'NO') as custom_aadhar_card,if((custom_kyc_certificate!='' and custom_gst_certificate!='' and custom_tdstcs_certificate!='' and custom_pan_card!='' and custom_hallmark_liacence!='' and custom_aadhar_card!=''),'Completed','Pending') as status,(select posting_date from `tabSales Invoice` where `tabSales Invoice`.customer_name=`tabCustomer`.customer_name and `tabSales Invoice`.einvoice_status='GENERATED' order by `tabSales Invoice`.posting_date,`tabSales Invoice`.posting_time limit 1) as bill_generated_date  from tabCustomer "+query_append)
 	data = frappe.db.sql("select tabCustomer.custom_account_code as customer_code,`tabCustomer`.`customer_name` as account_name,if(custom_kyc_certificate!='', 'YES', 'NO') as custom_kyc_certificate,if(custom_gst_certificate!='', 'YES', 'NO') as custom_gst_certificate,if(custom_tdstcs_certificate!='', 'YES', 'NO') as custom_tdstcs_certificate,if(custom_pan_card!='', 'YES', 'NO') as custom_pan_card,if(custom_hallmark_liacence!='', 'YES', 'NO') as custom_hallmark_liacence,if(custom_aadhar_card!='', 'YES', 'NO') as custom_aadhar_card,if((custom_kyc_certificate!='' and custom_gst_certificate!='' and custom_tdstcs_certificate!='' and custom_pan_card!='' and custom_hallmark_liacence!='' and custom_aadhar_card!=''),'Completed','Pending') as status,(select posting_date from `tabSales Invoice` where `tabSales Invoice`.customer_name=`tabCustomer`.customer_name and `tabSales Invoice`.einvoice_status='GENERATED' order by `tabSales Invoice`.posting_date,`tabSales Invoice`.posting_time limit 1) as bill_generated_date  from tabCustomer "+query_append+"",as_dict=1)
 	return columns, data

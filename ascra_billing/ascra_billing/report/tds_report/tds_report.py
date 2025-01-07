@@ -72,6 +72,12 @@ def execute(filters=None):
 			"label" : "Total Payable Amt",
 			"fieldtype" : "Float",
 			"width" : "250"
+		},
+		{
+			"label": "Action",
+			"fieldname": "button",
+			"fieldtype": "Data",
+			"width": "180",
 		}
 	]
 	query_append = ""
@@ -91,5 +97,12 @@ def execute(filters=None):
 	
 	data = frappe.db.sql("select `tabSales Invoice`.`name` as invoice_no,`tabSales Invoice`.`posting_date`,tabCustomer.custom_account_code as customer_code,`tabSales Invoice`.`customer_name`,`tabSales Invoice Item`.`item_name` as item_name,`tabSales Invoice Item`.custom_department as carat,`tabSales Invoice`.`customer_name` as account_name,tabCustomer.custom_tan as tan,`tabSales Invoice`.total as total_amt,`tabSales Taxes and Charges`.tax_amount as tds_amount,`tabSales Invoice`.grand_total as total_payable_amount from `tabSales Invoice Item` left join `tabSales Invoice` on `tabSales Invoice Item`.`parent`=`tabSales Invoice`.`name` join tabCustomer on `tabSales Invoice`.`customer`= tabCustomer.name left join `tabSales Taxes and Charges` on `tabSales Invoice`.name=`tabSales Taxes and Charges`.parent where "+query_append+"  group by `tabSales Invoice`.`name`",as_dict=1)
 	# print("select `tabSales Invoice`.`name` as invoice_no,`tabSales Invoice`.`posting_date`,tabCustomer.custom_account_code as customer_code,`tabSales Invoice`.`customer_name`,`tabSales Invoice Item`.`item_name` as item_name,`tabSales Invoice Item`.custom_department as carat,`tabSales Invoice`.`customer_name` as account_name,tabCustomer.custom_tan as tan,`tabSales Invoice`.total as total_amt,`tabSales Taxes and Charges`.tax_amount as tcs_amount,`tabSales Invoice`.grand_total as total_payable_amount from `tabSales Invoice Item` left join `tabSales Invoice` on `tabSales Invoice Item`.`parent`=`tabSales Invoice`.`name` join tabCustomer on `tabSales Invoice`.`customer`= tabCustomer.name left join `tabSales Taxes and Charges` on `tabSales Invoice`.name=`tabSales Taxes and Charges`.parent where "+query_append+"  group by `tabSales Invoice`.`name`")
-	
+	#row["button"] = '<button class="btn btn-sm" onclick="frappe.open_dialog({})">Open</button>'.format("'" + row.invoice_no + "'")
+
+	for row in data:
+		add_btn = '<a href="'+frappe.utils.get_url()+'/app/invoice-tds/new-invoice-tds?invoice_number='+row.invoice_no+'" class="btn btn-link text-warning print-btn btn-edit">Edit<i class="ti-pencil-alt tooltip"><span class="tooltiptext"></span></i></button>'
+		add_lock_btn = '<a href="javascript:void(0)" class="btn btn-link text-warning print-btn btn-edit" onClick="lock_unlock(\''+row.invoice_no+'\',2)">Lock<i class="ti-pencil-alt tooltip"><span class="tooltiptext"></span></i></button>'
+
+		row["button"] = add_btn + add_lock_btn
+
 	return columns, data
