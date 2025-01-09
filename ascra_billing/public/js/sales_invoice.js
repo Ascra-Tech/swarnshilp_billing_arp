@@ -28,15 +28,17 @@ frappe.ui.form.on('Sales Invoice', {
 //			};
 //		});
 
-		frm.fields_dict["items"].grid.get_field("custom_item").get_query = function(doc, cdt, cdn) {
-            let row = locals[cdt][cdn];
-            return {
-                query: "ascra_billing.ascra_billing.doc_events.sales_invoice.filter_items_by_department",
-                filters: {
-                    department: frm.doc.custom_other_department
-                }
+        if (frm.doc.custom_other_department){
+            frm.fields_dict["items"].grid.get_field("custom_item").get_query = function(doc, cdt, cdn) {
+                let row = locals[cdt][cdn];
+                return {
+                    query: "ascra_billing.ascra_billing.doc_events.sales_invoice.filter_items_by_department",
+                    filters: {
+                        department: frm.doc.custom_other_department
+                    }
+                };
             };
-        };
+        }
 
 	},
 	
