@@ -183,3 +183,53 @@ def filter_items_by_department(doctype, txt, searchfield, start, page_len, filte
         AND name LIKE %s
         LIMIT %s, %s
     """, (department, f"%{txt}%", start, page_len))
+
+@frappe.whitelist()
+def send_whatsapp_msg():
+	import requests
+	import json
+
+	# API Endpoint
+	url = "https://api.interakt.ai/v1/public/message/"
+
+	# Replace with your API Key
+	api_key = "TmxnQ010ckRucnFfY2duMGN3c1liSE5famVKZU5Oa21SMy1vUy1ySEpyWTo="
+
+	# Replace with your Campaign ID and Template Details
+	payload = {
+		"countryCode": "+91",  # Country Code
+		"phoneNumber": "7775864688",  # Phone Number
+		"callbackData": "Callback Data",  # Callback Data
+		"type": "Template",  # Type of Message
+		"template": {
+			"name": "order_tracking_url",  # Template name
+			"languageCode": "en",  # Language code
+			"headerValues": [  # Header values
+				"ASCRA TECHNOLOGIES"
+			],
+			"bodyValues": [  # Body values
+				"1"
+			],
+			"buttonValues": {  # Button values
+				"1": [
+					"256661"
+				]
+			}
+		}
+	}
+
+	# Headers
+	headers = {
+		"Authorization": f"Basic {api_key}",  # Authorization Header
+		"Content-Type": "application/json"  # Content Type
+	}
+
+	# Make the POST Request
+	try:
+		response = requests.post(url, headers=headers, data=json.dumps(payload))
+		if response.status_code == 200:
+			print("Message sent successfully:", response.json())
+		else:
+			print(f"Failed to send message (HTTP {response.status_code}):", response.text)
+	except Exception as e:
+		print("An error occurred:", e)
