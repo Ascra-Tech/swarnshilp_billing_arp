@@ -1,0 +1,32 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-14 13:05:33.788872",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "bill_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "bill_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Bill Type",
+   "options": "Bill Type"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-14 16:36:33.451457",
+ "modified_by": "Administrator",
+ "module": "Ascra Billing",
+ "name": "Bill Type Child",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

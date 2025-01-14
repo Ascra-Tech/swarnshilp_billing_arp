@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt
+import requests
 
 
 # def before_save(self, method):
@@ -169,3 +170,35 @@ def validate_account_block_status(doc, method):
         supplier_doc = frappe.get_doc("Supplier", supplier)
         if supplier_doc.custom_block_account :
             frappe.throw(f"Cannot save Purchase Invoice. Customer '{supplier}' is blocked ('{supplier_doc.custom_reason}')")
+
+@frappe.whitelist()
+def fetch_bill_types():
+	url = "https://staging-swarnshilp-accounting.ascratech.com/GST_api"  # Replace with your URL
+	headers = {"Content-Type": "application/json"}
+
+	response = requests.get(url, headers=headers)
+
+	if response.status_code == 200:
+		data = response.json()
+
+		if "bill_type" in data:
+			bill_types = data["bill_type"]
+
+			# Create or update Bill Type records
+			for bill in bill_types:
+				bill_name = bill.get("name")
+
+				if bill_name:
+					# Update the User doctype to add these Bill Types as options
+					# In a real scenario, you can either create a new Bill Type Doctype or use an existing one
+					bill_type_doc = frappe.get_doc({
+						"doctype": "Bill Type",  # Assuming 'Bill Type' is a Doctype
+						"bill_type": bill_name
+					})
+					bill_type_doc.insert()
+
+			frappe.db.commit()
+		else:
+			frappe.throw("Bill types not found in the response.")
+	else:
+		frappe.throw(f"Failed to fetch data from the URL. Status Code: {response.status_code}")

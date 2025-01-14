@@ -28,6 +28,8 @@ class SalesIssueVoucher(Document):
 		perform_calculations(self)
 		self.billing_status = 'approve'
 
+
+
 def perform_calculations(self):
 	# Fetch Customer
 	self.customer = frappe.db.get_value("Customer", {"custom_account_code": self.account_code})
@@ -409,3 +411,58 @@ def get_docket_file_path():
 		frappe.response['message'] = []
 	else:
 		frappe.response['message'] = get_file_url
+
+def get_permission_query_conditions(user):
+	if not user:
+		user = frappe.session.user  # Get the currently logged-in user
+
+	# Query to fetch bill types
+	query = """
+    	        SELECT child.bill_type 
+    	        FROM `tabBill Type Child` AS child
+    	        JOIN `tabUser` AS parent ON parent.name = child.parent
+    	        WHERE parent.name = %s
+    	    """
+	result = frappe.db.sql(query, (user,), as_dict=True)
+	# Extract bill_type values into a list
+	bill_types = [row.get('bill_type') for row in result]
+	if user == "Administrator":
+		return None
+
+	# user_doc = frappe.get_doc("User", user)
+	# for row in user_doc.custom_bill_type:
+	# 	print(f"----------row---1-------{row}--{user_doc.custom_bill_type}")
+	# allowed_bill_types = [row.bill_type for row in user_doc.custom_bill_type]
+
+	if not bill_types:
+		return "1 = 2"
+
+	allowed_types_str = (', '.join(f"'{bt}'" for bt in bill_types))
+	return f"gst_name IN ({allowed_types_str})"
+
+
+# def has_permission(doc, user=None):
+# 	if not user:
+# 		user = frappe.session.user  # Get the currently logged-in user
+#
+# 		# Query to fetch bill types
+# 		query = """
+# 		        SELECT child.bill_type
+# 		        FROM `tabBill Type Child` AS child
+# 		        JOIN `tabSales Issue Voucher` AS parent ON parent.name = child.parent
+# 		        WHERE parent.name = %s
+# 		    """
+# 	result = frappe.db.sql(query, (user,), as_dict=True)
+#
+# 	# Extract bill_type values into a list
+# 	bill_types = [row['bill_type'] for row in result]
+#
+# 	if user == "Administrator":
+# 		return True
+#
+# 	# user_doc = frappe.get_doc("User", user)
+# 	# allowed_bill_types = [row.bill_type for row in user_doc.custom_bill_type]
+#
+# 	return doc.bill_type in bill_types
+
+

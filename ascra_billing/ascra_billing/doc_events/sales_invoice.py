@@ -198,7 +198,7 @@ def send_whatsapp_msg():
 	# Replace with your Campaign ID and Template Details
 	payload = {
 		"countryCode": "+91",  # Country Code
-		"phoneNumber": "7775864688",  # Phone Number
+		"phoneNumber": "7208283676",  # Phone Number
 		"callbackData": "Callback Data",  # Callback Data
 		"type": "Template",  # Type of Message
 		"template": {

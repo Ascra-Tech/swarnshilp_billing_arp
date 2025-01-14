@@ -32,6 +32,7 @@ doctype_js = {
     "Sales Invoice": "public/js/sales_invoice.js",
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
+    "User": "public/js/user.js"
 }
 doctype_list_js = {"Sales Invoice" : "public/js/sales_invoice_list.js"}
 
@@ -107,13 +108,25 @@ doctype_list_js = {"Sales Invoice" : "public/js/sales_invoice_list.js"}
 # Permissions
 # -----------
 # Permissions evaluated in scripted ways
-
+# permission_query_conditions = {
+#     "Sales Issue Voucher": "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.get_permission_query_conditions",
+#     "Sales Receipt Voucher": "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.get_permission_query_conditions"
+# }
 # permission_query_conditions = {
 # 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
 # }
 #
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# }
+
+permission_query_conditions = {
+    "Sales Issue Voucher": "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.get_permission_query_conditions",
+    "Sales Receipt Voucher": "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.get_permission_query_conditions"
+}
+
+# has_permission = {
+#     "Sales Issue Voucher": "ascra_billing.ascra_billing.doctype.sales_issue_voucher.sales_issue_voucher.has_permission"
 # }
 
 # DocType Class
@@ -259,7 +272,9 @@ fixtures = [
                                                             "Item-custom_other_department",
                                                             "Sales Invoice-custom_other_department",
                                                             "Supplier-custom_account_sub_code",
-                                                            "Purchase Invoice-custom_other_department"]]]},
+                                                            "Purchase Invoice-custom_other_department",
+                                                            "User-custom_bill_type"
+                                                            ]]]},
     {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
     {"doctype": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
