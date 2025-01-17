@@ -274,7 +274,8 @@ fixtures = [
                                                             "Sales Invoice-custom_other_department",
                                                             "Supplier-custom_account_sub_code",
                                                             "Purchase Invoice-custom_other_department",
-                                                            "User-custom_bill_type"
+                                                            "User-custom_bill_type",
+                                                            "Sales Invoice-custom_total_pcs"
                                                             ]]]},
     {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},

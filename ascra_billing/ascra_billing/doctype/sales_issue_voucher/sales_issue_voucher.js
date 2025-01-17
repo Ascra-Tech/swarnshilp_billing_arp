@@ -34,6 +34,8 @@ frappe.ui.form.on('Sales Issue Voucher', {
 
 })
 
+
+
 function setStatusPill(frm){
         if(document.getElementById('doc-status')){
             document.getElementById('doc-status').remove();

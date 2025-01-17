@@ -79,12 +79,30 @@ frappe.ui.form.on('Sales Invoice Item', {
 frappe.ui.form.on('Sales Invoice', {
     refresh: function(frm) {
         update_tcs_payable(frm);
+        calculate_total_pcs(frm);
     },
-
+    item_add: function (frm) {
+        calculate_total_pcs(frm);
+    },
+    items_remove: function (frm) {
+        calculate_total_pcs(frm);
+    },
     validate : function(frm) {
         update_tcs_payable(frm);
     }
 });
+
+function calculate_total_pcs(frm) {
+    let total_pieces = 0;
+
+    // Iterate over child table items
+    frm.doc.items.forEach(item => {
+        total_pieces += item.custom_pieces || 0;
+    });
+
+    // Update the custom_total_pcs field in the parent doctype
+    frm.set_value('custom_total_pcs', total_pieces);
+}
 
 function update_tcs_payable(frm) {
     // Loop through the taxes and charges table

@@ -255,6 +255,7 @@ def make_sales_invoice(source_name, target_doc=None):
 					target.customer_address = address[0]
 		target.custom_other_department = source.item_details[0].get("department_name")
 		target.custom_sales_type = source.voucher_billing_dept_cat_type
+		target.custom_total_pcs = source.total_hm_pieces
 
 	def post_process(source, target):
 		set_missing_values(source,target)
