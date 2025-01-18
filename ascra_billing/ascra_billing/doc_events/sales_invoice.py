@@ -4,8 +4,18 @@ from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt
 
 
-def before_save(self, method):
-	pass
+def before_save(doc, method):
+    excluded_keywords = ["making charges", "makingcharges"]
+    total_qty = 0
+    total_amount = 0
+
+    for item in doc.items:
+        if not any(keyword in (item.item_name or "").lower() for keyword in excluded_keywords):
+            total_qty += item.qty or 0
+            total_amount += item.amount or 0
+
+    doc.total_qty = total_qty
+    doc.total = total_amount
 
 # ascra_billing.ascra_billing.doc_events.sales_invoice.make_delivery_note
 
@@ -156,14 +166,42 @@ def get_item_details(company=None, item_code = None):
 		"message": item_details_dict
 	}
 
+
 @frappe.whitelist()
 def validate_account_block_status(doc, method):
-    customer = doc.customer
-    
-    if customer:
-        customer_doc = frappe.get_doc("Customer", customer)
-        if customer_doc.custom_block_account :
-            frappe.throw(f"Cannot save Sales Invoice. Customer '{customer}' is blocked ('{customer_doc.custom_reason}')")
+	customer = doc.customer
+
+	if customer:
+		customer_doc = frappe.get_doc("Customer", customer)
+		if customer_doc.custom_block_account:
+			frappe.throw(
+				f"Cannot save Sales Invoice. Customer '{customer}' is blocked ('{customer_doc.custom_reason}')")
+
+		# 	by navnath
+		excluded_keywords = ["making charges", "makingcharges"]
+		total_qty = 0
+		total_amount = 0
+		total_taxes = 0
+		for item in doc.items:
+			if not any(keyword in (item.item_name or "").lower() for keyword in excluded_keywords):
+				total_qty += item.qty or 0
+				total_amount += item.amount or 0
+
+		# Calculate taxes excluding making charges
+		for tax in doc.taxes:
+			tax_amount = 0
+
+			for item in doc.items:
+				if not any(keyword in (item.item_name or "").lower() for keyword in excluded_keywords):
+					tax_amount += (item.amount or 0) * (tax.rate / 100)
+
+			tax.tax_amount = tax_amount
+			total_taxes += tax_amount
+
+		doc.total_qty = total_qty
+		doc.total = total_amount
+		doc.total_taxes_and_charges = total_taxes
+
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
