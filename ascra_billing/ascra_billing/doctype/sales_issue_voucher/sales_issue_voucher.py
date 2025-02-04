@@ -8,6 +8,19 @@ import requests
 import json
 
 class SalesIssueVoucher(Document):
+	# taxtype check 
+	def validate(self):
+		pass
+		# if self.sub_account and self.customer:
+		# 	custom_tax_type = frappe.db.get_value("Customer",{"name":self.sub_account},'custom_tax_type')
+		# 	if self.tax_type_accounting_to_billing != custom_tax_type:
+		# 		frappe.throw(f"The tax type for billing customer should be {custom_tax_type}")
+
+		# if self.customer and not self.sub_account:
+		# 	custom_tax_type = frappe.db.get_value("Customer",{"name":self.customer},'custom_tax_type')
+		# 	if self.tax_type_accounting_to_billing != custom_tax_type:
+		# 		frappe.throw(f"The tax type for billing customer should be {custom_tax_type}")
+
 	def before_insert(self):
 		perform_calculations(self)
 	# def before_submit(self):
