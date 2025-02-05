@@ -2,7 +2,6 @@
 
 frappe.ui.form.on('Sales Invoice', {
 	refresh(frm, cdt, cdn) {
-
         var data = frm.doc.items
         data.forEach(function(e){
             // if (e.custom_item == "MakingCharges"){
