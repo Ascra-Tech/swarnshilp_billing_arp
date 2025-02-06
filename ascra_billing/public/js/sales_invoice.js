@@ -2,6 +2,38 @@
 
 frappe.ui.form.on('Sales Invoice', {
 	refresh(frm, cdt, cdn) {
+
+        // paste will not allowed code
+        let fields = [
+        'custom_gold_rate__with_gst',
+        'custom_total_pcs',
+        'custom_hallmark_amount',
+        'custom_logistic_amount',
+        'custom_total_oc',
+        'custom_gold_rate','custom_sales_issue_voucher','custom_gst_percentage','custom_gold_purity'
+        ];
+
+        fields.forEach(field => {
+            frm.fields_dict[field].$wrapper.find('input').on('paste', function (e) {
+                e.preventDefault();
+                frappe.msgprint(__('Pasting is not allowed in this field.'));
+            });
+        });
+
+        
+
+        let restricted_fields = ["qty",'custom_gross_wt'];
+
+        frm.fields_dict['items'].grid.wrapper.on('paste', 'input[data-fieldname]', function(e) {
+            let fieldname = $(this).attr("data-fieldname");
+            if (restricted_fields.includes(fieldname)) {
+                e.preventDefault(); // Prevent pasting
+                frappe.msgprint(__('Pasting is not allowed in this field.'));
+            }
+        });
+
+        // paste will not allowed code
+        
         var data = frm.doc.items
         data.forEach(function(e){
             // if (e.custom_item == "MakingCharges"){

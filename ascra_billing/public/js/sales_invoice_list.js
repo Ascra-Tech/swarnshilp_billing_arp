@@ -25,6 +25,25 @@ frappe.listview_settings['Sales Invoice'] = {
 
     onload: function (listview) {
 
+        // hide created by for other expect admin
+        if (frappe.user.has_role("Administrator")){
+            console.log('----------')
+        } else {
+            $(`.list-row-col:contains("Creator")`).hide();
+            // Ensure listview.columns exists
+            if (listview.columns && Array.isArray(listview.columns)) {
+                listview.columns = listview.columns.filter(col => {
+                    return col.df?.label !== "Creator" && col.df?.name !== "Sales Invoice-custom_creator";
+                });
+                
+                listview.refresh();
+            } else {
+                console.warn("listview.columns is undefined or not an array.");
+            }
+        }
+        
+        // hide created by for other expect admin
+
         // ✅ Open in View-Only Mode
         listview.page.add_action_item(__('Open in View-Only'), function () {
             const selected = listview.get_checked_items();
