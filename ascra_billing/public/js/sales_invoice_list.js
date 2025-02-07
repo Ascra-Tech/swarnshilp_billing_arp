@@ -25,6 +25,23 @@ frappe.listview_settings['Sales Invoice'] = {
 
     onload: function (listview) {
 
+         // ✅ Export Button
+        listview.page.add_inner_button(__("Export"), function() {
+            frappe.set_route("Form", "Data Export").then(() => {
+                frappe.after_ajax(() => {
+                    // Set the Doctype field
+                    frappe.model.set_value("Data Export", "Data Export", "reference_doctype", "Sales Invoice");
+
+                    // Set the Export Format field
+                    frappe.model.set_value("Data Export", "Data Export", "export_format", "Excel");
+
+                });
+            });
+
+
+        });
+        // ✅ Export Button
+
         // hide created by for other expect admin
         if (frappe.user.has_role("Administrator")){
             console.log('----------')
