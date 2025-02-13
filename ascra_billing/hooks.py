@@ -177,9 +177,9 @@ scheduler_events = {
 	# "all": [
 	# 	"ascra_billing.tasks.all"
 	# ],
-	"daily": [
-		"ascra_billing.ascra_billing.doc_events.cron_mark_attendance.cron_mark_attendance_today_date"
-	],
+	#"daily": [
+	#	"ascra_billing.ascra_billing.doc_events.cron_mark_attendance.cron_mark_attendance_today_date"
+	#],
 	# "hourly": [
 	# 	"ascra_billing.tasks.hourly"
 	# ],
