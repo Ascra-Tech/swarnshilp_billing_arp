@@ -269,16 +269,9 @@ override_whitelisted_methods = {
 
 fixtures = [
     {"doctype": "Expense Claim", "filters": [["name", "in", ["MakingCharges"]]]},
-    {"doctype": "Custom Field", "filters": [["module", "in", ["Ascra Billing"]]]},
-    {"doctype": "Custom Field", "filters": [["name", "in", ["Customer-custom_account_sub_code",
-                                                            "Customer-custom_account_code",
-                                                            "Item-custom_other_department",
-                                                            "Sales Invoice-custom_other_department",
-                                                            "Supplier-custom_account_sub_code",
-                                                            "Purchase Invoice-custom_other_department",
-                                                            "User-custom_bill_type",
-                                                            "Sales Invoice-custom_total_pcs"
-                                                            ]]]},
+    "Custom Field",
+    "Workspace",
+    "Custom DocPerm",
     {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
     {"doctype": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
