@@ -150,5 +150,24 @@
   "reference_doctype": "Address",
   "script": "\nif doc.custom_account_code :\n    custom_account_code=doc.custom_account_code\n    doc.name = f\"{custom_account_code}\"",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Insert",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-02-17 18:33:25.528934",
+  "module": "Ascra Billing",
+  "name": "Shipment",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Shipment",
+  "script": "if doc.workflow_state == \"Approved\":\n    phone_numbers = frappe.get_all(\n        \"Contact Phone\", \n        filters={\"parent\": doc.delivery_contact_name}, \n        pluck=\"phone\"\n    )\n    \n    phone_numbers_str = \", \".join(phone_numbers) if phone_numbers else \"\"\n    \n    delivery_note = frappe.db.get_value(\"Shipment Delivery Note\",{\"parent\":doc.name},\"delivery_note\")\n    against_sales_invoice = frappe.db.get_value(\"Delivery Note Item\",{\"parent\":delivery_note},\"against_sales_invoice\")\n\n\n    follow_up_doc = frappe.db.get_value(\"Follow-Up\", {\"shipment\": doc.name}, \"name\")\n    \n    if follow_up_doc:\n        existing_doc = frappe.get_doc(\"Follow-Up\", follow_up_doc)\n        existing_doc.append(\"follow_up_detail\", {\n            \"status\": \"Dispatch\",\n            \"remark\": doc.description_of_content,\n            \"next_follow_up_date\": frappe.utils.today(),\n            \"follow_up_by\": doc.pickup_contact_person,\n            \"follow_up_date\": doc.pickup_date\n        })\n        existing_doc.save(ignore_permissions=True)\n        frappe.msgprint(\"Updated existing Follow-Up with new follow-up details.\")\n    \n    else:\n        new_doc = frappe.new_doc(\"Follow-Up\")\n        new_doc.invoice_no = against_sales_invoice if against_sales_invoice else \"\"\n        new_doc.shipment = doc.name\n        new_doc.logistic_remark = doc.description_of_content\n        new_doc.account_name = doc.delivery_customer\n        new_doc.docket_no = doc.shipment_id\n        new_doc.date = doc.pickup_date\n        new_doc.city = frappe.db.get_value(\"Address\", doc.delivery_address_name, \"city\")\n        new_doc.next_follow_by = doc.pickup_contact_person\n        new_doc.next_follow_up = frappe.utils.today()\n        new_doc.section_break_jy8p = \"Dispatch\"\n        \n        new_doc.cargo_purpose = phone_numbers_str\n\n        new_doc.append(\"follow_up_detail\", {\n            \"status\": \"Dispatch\",\n            \"remark\": doc.description_of_content,\n            \"next_follow_up_date\": frappe.utils.today(),\n            \"follow_up_by\": doc.pickup_contact_person,\n            \"follow_up_date\": doc.pickup_date\n        })\n        \n        new_doc.save(ignore_permissions=True)\n        frappe.msgprint(\"Created a new Follow-Up document.\")\n        \n        \n        \n\nif not doc.is_new():\n    doc.append(\"follow_up_detail\", {\n        \"status\": doc.section_break_jy8p,\n        \"remark\": doc.logistic_remark,\n        \"next_follow_up_date\": doc.next_follow_up,\n        \"follow_up_by\": doc.next_follow_by,\n        \"follow_up_date\": doc.next_follow_up\n    })",
+  "script_type": "DocType Event"
  }
 ]
