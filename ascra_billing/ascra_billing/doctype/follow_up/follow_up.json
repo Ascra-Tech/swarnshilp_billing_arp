@@ -1,0 +1,139 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:Follow-Up-{####}",
+ "creation": "2025-02-10 19:37:14.043943",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "shipment",
+  "date",
+  "section_break_jy8p",
+  "next_follow_up",
+  "next_follow_by",
+  "city",
+  "cargo_purpose",
+  "column_break_inib",
+  "invoice_no",
+  "logistic_remark",
+  "account_name",
+  "mobile_no",
+  "docket_no",
+  "section_break_duag",
+  "follow_up_detail"
+ ],
+ "fields": [
+  {
+   "fieldname": "shipment",
+   "fieldtype": "Link",
+   "label": "Shipment",
+   "options": "Shipment",
+   "unique": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "section_break_jy8p",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Logistic Status",
+   "options": "\nDispatch\nConfirm\nPending",
+   "reqd": 1
+  },
+  {
+   "fieldname": "next_follow_up",
+   "fieldtype": "Date",
+   "label": "Next Follow Up"
+  },
+  {
+   "fieldname": "next_follow_by",
+   "fieldtype": "Link",
+   "label": "Next Follow By",
+   "options": "User"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "cargo_purpose",
+   "fieldtype": "Data",
+   "label": "Cargo Purpose"
+  },
+  {
+   "fieldname": "column_break_inib",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Link",
+   "label": "Invoice No",
+   "options": "Sales Invoice",
+   "unique": 1
+  },
+  {
+   "fieldname": "logistic_remark",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Logistic Remark",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account_name",
+   "fieldtype": "Link",
+   "label": "Account Name",
+   "options": "Customer"
+  },
+  {
+   "fetch_from": "account_name.mobile_no",
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Mobile No"
+  },
+  {
+   "fieldname": "docket_no",
+   "fieldtype": "Data",
+   "label": "Docket No"
+  },
+  {
+   "fieldname": "section_break_duag",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "follow_up_detail",
+   "fieldtype": "Table",
+   "label": "Follow Up Detail",
+   "options": "Follow-Up Detail"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-02-17 15:47:46.668016",
+ "modified_by": "Administrator",
+ "module": "Ascra Billing",
+ "name": "Follow-Up",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
