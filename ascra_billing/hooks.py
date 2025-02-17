@@ -274,7 +274,7 @@ fixtures = [
     "Client Script",
     "Server Script",
     "Custom DocPerm",
-    {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
+    # {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
     {"doctype": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
 ]
