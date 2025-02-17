@@ -271,6 +271,8 @@ fixtures = [
     {"doctype": "Expense Claim", "filters": [["name", "in", ["MakingCharges"]]]},
     "Custom Field",
     "Workspace",
+    "Client Script",
+    "Server Script",
     "Custom DocPerm",
     {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
