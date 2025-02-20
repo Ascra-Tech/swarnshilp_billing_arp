@@ -16,6 +16,7 @@
   "notes",
   "column_break_mceg",
   "generate_bill_type",
+  "display_making_charges",
   "section_break_klcu",
   "item_details",
   "section_break_uixh",
@@ -462,12 +463,17 @@
    "fieldtype": "Select",
    "label": "Generate bill type",
    "options": "\nSales Bill\nLabour Bill\nRent Bill\nInvoice"
+  },
+  {
+   "fieldname": "display_making_charges",
+   "fieldtype": "Currency",
+   "label": "display_making_charges"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-20 16:47:24.117732",
+ "modified": "2025-02-20 19:35:42.145787",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
