@@ -14,6 +14,8 @@
   "gst_name",
   "column_break_pylf",
   "notes",
+  "column_break_mceg",
+  "generate_bill_type",
   "section_break_klcu",
   "item_details",
   "section_break_uixh",
@@ -450,12 +452,22 @@
    "fieldtype": "Link",
    "label": "Sub Account",
    "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_mceg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "generate_bill_type",
+   "fieldtype": "Select",
+   "label": "Generate bill type",
+   "options": "\nSales Bill\nLabour Bill\nRent Bill\nInvoice"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-07 19:41:10.947490",
+ "modified": "2025-02-20 16:47:24.117732",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Sales Receipt Voucher",
