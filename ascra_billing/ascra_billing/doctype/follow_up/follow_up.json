@@ -90,7 +90,6 @@
    "options": "Customer"
   },
   {
-   "fetch_from": "account_name.mobile_no",
    "fieldname": "mobile_no",
    "fieldtype": "Data",
    "label": "Mobile No"
@@ -113,7 +112,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-17 15:47:46.668016",
+ "modified": "2025-02-20 14:51:31.278974",
  "modified_by": "Administrator",
  "module": "Ascra Billing",
  "name": "Follow-Up",

@@ -138,7 +138,7 @@ def make_purchase_invoice(source_name, target_doc=None):
 		total_net_wt = 0
 		total_pcs = 0
 		total_fine = 0
-		print(source.generate_bill_type)
+
 		if source.generate_bill_type == 'Items':
 			for item in source.item_details:
 				target.append("items", {
