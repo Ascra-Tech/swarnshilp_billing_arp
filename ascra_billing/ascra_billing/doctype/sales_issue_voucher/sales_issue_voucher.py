@@ -269,6 +269,30 @@ def make_sales_invoice(source_name, target_doc=None):
 		target.custom_other_department = source.item_details[0].get("department_name")
 		target.custom_sales_type = source.voucher_billing_dept_cat_type
 		target.custom_total_pcs = source.total_hm_pieces
+		if source.voucher_billing_dept_cat_type == "Sales Bill":
+			target.custom_sales_type_prefix = "SB"
+		if source.voucher_billing_dept_cat_type == "Bill Heading":
+			target.custom_sales_type_prefix = "BH"
+		if source.voucher_billing_dept_cat_type == "Hallmark Issue":
+			target.custom_sales_type_prefix = "HI"
+		if source.voucher_billing_dept_cat_type == "Delivery Challan":
+			target.custom_sales_type_prefix = "DC"
+		if source.voucher_billing_dept_cat_type == "Issue Voucher":
+			target.custom_sales_type_prefix = "IV"	
+		if source.voucher_billing_dept_cat_type == "Sales Credit Note":
+			target.custom_sales_type_prefix = "SCN"	
+		if source.voucher_billing_dept_cat_type == "Sales Debit Note":
+			target.custom_sales_type_prefix = "SDN"	
+		if source.voucher_billing_dept_cat_type == "Rent Bill":
+			target.custom_sales_type_prefix = "RB"
+		if source.voucher_billing_dept_cat_type == "On Approval":
+			target.custom_sales_type_prefix = "OA"	
+		if source.voucher_billing_dept_cat_type == "Labour Bill":
+			target.custom_sales_type_prefix = "LB"	
+			
+	
+	
+		
 
 	def post_process(source, target):
 		set_missing_values(source,target)
