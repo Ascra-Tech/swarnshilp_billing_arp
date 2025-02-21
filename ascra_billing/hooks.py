@@ -32,7 +32,8 @@ doctype_js = {
     "Sales Invoice": "public/js/sales_invoice.js",
     "Delivery Note": "public/js/delivery_note.js",
     "Purchase Invoice": "public/js/purchase_invoice.js",
-    "User": "public/js/user.js"
+    "User": "public/js/user.js",
+    "Shipment":"public/js/shipment.js"
 }
 doctype_list_js = {"Sales Invoice" : "public/js/sales_invoice_list.js",
                    "Purchase Invoice" : "public/js/purchase_invoice_list.js"}
@@ -274,6 +275,7 @@ fixtures = [
     "Client Script",
     "Server Script",
     "Custom DocPerm",
+    "Print Format",
     # {"doctype": "Property Setter", "filters": [["module", "in", ["Ascra Billing"]]]},
     {"doctype": "Item", "filters": [["name", "in", ["MakingCharges"]]]},
     {"doctype": "GST HSN Code", "filters": [["name", "in", ["12345678"]]]},
