@@ -128,8 +128,38 @@ def make_purchase_invoice(source_name, target_doc=None):
 				address = [i.get("name") for i in frappe.get_all("Address", add_filter, ['name'])]
 				if address:
 					target.customer_address = address[0]
+
+		# Fetch TDS and Tax Withholding Category
+		if target.supplier:
+			supplier_data = frappe.db.get_value(
+				"Supplier", target.supplier, ["tax_withholding_category"], as_dict=True
+			)
+
+			if supplier_data:
+				target.apply_tds = 1
+				target.tax_withholding_category = supplier_data.get("tax_withholding_category")
+
 		target.custom_other_department = source.item_details[0].get("department_name")
-		target.custom_bill_type = source.gst_name
+		# target.custom_bill_type = source.gst_name
+		target.custom_bill_type = source.voucher_billing_dept_cat_type
+		if source.voucher_billing_dept_cat_type == "Purchase Bill":
+			target.naming_series = "PB-."
+		if source.voucher_billing_dept_cat_type == "Receipt Voucher":
+			target.naming_series = "RV-."
+		if source.voucher_billing_dept_cat_type == "Sales Return":
+			target.naming_series = "SR-."
+		if source.voucher_billing_dept_cat_type == "On Approval Receipt":
+			target.naming_series = "OAR-."
+		if source.voucher_billing_dept_cat_type == "Hallmark Receipt":
+			target.naming_series = "HR-."
+		if source.voucher_billing_dept_cat_type == "Order Memo":
+			target.naming_series = "OM-."
+		if source.voucher_billing_dept_cat_type == "Purchase Debit Note":
+			target.naming_series = "PDN-."
+		if source.voucher_billing_dept_cat_type == "Purchas Credit Note":
+			target.naming_series = "PCN-."
+
+
 	def post_process(source, target):
 		set_missing_values(source, target)
 		target.posting_date = frappe.utils.now_datetime()
