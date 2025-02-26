@@ -142,23 +142,24 @@ def make_purchase_invoice(source_name, target_doc=None):
 		target.custom_other_department = source.item_details[0].get("department_name")
 		# target.custom_bill_type = source.gst_name
 		target.custom_sales_type = source.voucher_billing_dept_cat_type
-		if source.voucher_billing_dept_cat_type == "Purchase Bill":
+		if target.custom_sales_type == "Purchase Bill":
 			target.naming_series = "PB-."
-		if source.voucher_billing_dept_cat_type == "Receipt Voucher":
+		if target.custom_sales_type == "Receipt Voucher":
 			target.naming_series = "RV-."
-		if source.voucher_billing_dept_cat_type == "Sales Return":
+		if target.custom_sales_type == "Sales Return":
 			target.naming_series = "SR-."
-		if source.voucher_billing_dept_cat_type == "On Approval Receipt":
+		if target.custom_sales_type == "On Approval Receipt":
 			target.naming_series = "OAR-."
-		if source.voucher_billing_dept_cat_type == "Hallmark Receipt":
+		if target.custom_sales_type == "Hallmark Receipt":
 			target.naming_series = "HR-."
-		if source.voucher_billing_dept_cat_type == "Order Memo":
+		if target.custom_sales_type == "Order Memo":
 			target.naming_series = "OM-."
-		if source.voucher_billing_dept_cat_type == "Purchase Debit Note":
+		if target.custom_sales_type == "Purchase Debit Note":
 			target.naming_series = "PDN-."
-		if source.voucher_billing_dept_cat_type == "Purchas Credit Note":
+		if target.custom_sales_type == "Purchase Credit Note":
 			target.naming_series = "PCN-."
 
+			
 
 	def post_process(source, target):
 		set_missing_values(source, target)
