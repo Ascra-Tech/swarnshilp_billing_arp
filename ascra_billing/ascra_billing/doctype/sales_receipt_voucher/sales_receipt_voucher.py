@@ -141,7 +141,7 @@ def make_purchase_invoice(source_name, target_doc=None):
 
 		target.custom_other_department = source.item_details[0].get("department_name")
 		# target.custom_bill_type = source.gst_name
-		target.custom_bill_type = source.voucher_billing_dept_cat_type
+		target.custom_sales_type = source.voucher_billing_dept_cat_type
 		if source.voucher_billing_dept_cat_type == "Purchase Bill":
 			target.naming_series = "PB-."
 		if source.voucher_billing_dept_cat_type == "Receipt Voucher":
