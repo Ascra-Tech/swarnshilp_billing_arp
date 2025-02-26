@@ -202,3 +202,14 @@ def fetch_bill_types():
 			frappe.throw("Bill types not found in the response.")
 	else:
 		frappe.throw(f"Failed to fetch data from the URL. Status Code: {response.status_code}")
+
+
+
+
+@frappe.whitelist()
+def get_tax_details(tax_category):
+    return frappe.db.sql('''
+        SELECT tax_withholding_rate 
+        FROM `tabTax Withholding Rate` 
+        WHERE parent = %s
+    ''', (tax_category,), as_dict=True)

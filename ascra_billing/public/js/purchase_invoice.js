@@ -41,7 +41,56 @@ frappe.ui.form.on('Purchase Invoice', {
         }
 
 	},
-	
+    validate: function (frm) {
+        if (!frm.doc.supplier) return;
+
+        frappe.db.get_value("Supplier", frm.doc.supplier, "tax_withholding_category", (supplierData) => {
+            if (supplierData && supplierData.tax_withholding_category) {
+                let tax_category = supplierData.tax_withholding_category;
+
+                frappe.call({
+                    method: "ascra_billing.ascra_billing.doc_events.purchase_invoice.get_tax_details",
+                    args: {
+                        tax_category: tax_category
+                    },
+                    callback: function (r) {
+
+                        if (r.message && r.message.length > 0) {
+                            let taxRates = r.message;
+                            let tds_rate = taxRates.length ? taxRates[0].tax_withholding_rate : 1;
+
+
+                            let tds_account = "TDS Payable - ATL";
+                            let net_total = frm.doc.net_total || 0;
+                            let tds_amount = (net_total * tds_rate) / 100;
+
+                            let rounded_tds_amount = (tds_amount % 1) >= 0.5 
+                                ? Math.ceil(tds_amount)  
+                                : Math.floor(tds_amount); 
+
+                            let tds_entry = frm.doc.taxes.find(tax => tax.account_head === tds_account);
+
+                            if (!tds_entry) {
+                                frm.add_child("taxes", {
+                                    charge_type: "Actual",
+                                    account_head: tds_account,
+                                    rate: tds_rate,
+                                    tax_amount: rounded_tds_amount,
+                                });
+                            } else {
+                                tds_entry.rate = tds_rate;
+                                tds_entry.tax_amount = rounded_tds_amount;
+                            }
+
+                            frm.refresh_field("taxes");
+                        } else {
+                            console.log("No Tax Withholding Rate found.");
+                        }
+                    }
+                });
+            }
+        });
+    }	
 })
 
 frappe.ui.form.on('Purchase Invoice Item', {
