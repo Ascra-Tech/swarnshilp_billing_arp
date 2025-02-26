@@ -14,17 +14,6 @@
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Sales Invoice",
-  "enabled": 1,
-  "modified": "2025-02-17 16:51:58.880516",
-  "module": "Ascra Billing",
-  "name": "Sales invoice",
-  "script": "frappe.ui.form.on('Sales Invoice', {\n    refresh: function (frm) {\n        // This function will run when the form is refreshed\n        // You can initialize or manipulate fields here if needed\n    },\n    onload: function (frm) {\n        \n    },\n    custom_sales_type : function (frm) {\n        if(frm.doc.custom_sales_type==\"Labour Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"LB\");\n        }\n        else if(frm.doc.custom_sales_type==\"On Approval\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"OAI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Rent Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"RB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Invoice\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n        else if(frm.doc.custom_sales_type==\"Hallmark Issue\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"HI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Debit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SDN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Credit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SCN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Issue Voucher\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IV\");\n        }\n        else if(frm.doc.custom_sales_type==\"Delivery Challan\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"DC\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n    }\n});\nfrappe.ui.form.on('Sales Invoice', {\n    before_save: function(frm) {\n        if (frm.doc.custom_sales_type==\"On Approval\" || frm.doc.custom_sales_type==\"Issue Voucher\" || frm.doc.custom_sales_type==\"Hallmark Issue\" || frm.doc.custom_sales_type==\"Delivery Challan\") {\n            // Remove TCS related fields if the condition is not met\n            frm.doc.tcs_amount = 0;\n            frm.doc.tcs_rate = 0;\n            frm.refresh_fields(); // Refresh the form to apply changes\n        }\n        if(frm.doc.custom_sales_type==\"Labour Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"LB\");\n        }\n        else if(frm.doc.custom_sales_type==\"On Approval\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"OAI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Rent Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"RB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Invoice\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n        else if(frm.doc.custom_sales_type==\"Hallmark Issue\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"HI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Debit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SDN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Credit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SCN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Issue Voucher\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IV\");\n        }\n        else if(frm.doc.custom_sales_type==\"Delivery Challan\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"DC\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n    },\n});\nfrappe.ui.form.on('Sales Invoice', {\n    refresh(frm) {\n        setTimeout(() => {\n            frm.remove_custom_button('Quality Inspection(s)', 'Create');\n            frm.remove_custom_button('Fetch Timesheet');\n            }, 10);\n    }\n});\nfrappe.ui.form.on(\"Sales Invoice\", \"validate\", function(frm) {\n    cur_frm.set_value(\"custom_created_by\", frm.doc.owner);\n});",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Sales Invoice",
   "enabled": 0,
   "modified": "2025-01-16 16:10:21.426861",
   "module": null,
@@ -37,10 +26,54 @@
   "doctype": "Client Script",
   "dt": "Sales Invoice",
   "enabled": 1,
-  "modified": "2025-02-25 18:47:17.598610",
+  "modified": "2025-02-26 12:12:15.461551",
   "module": "Ascra Billing",
-  "name": "tax round",
-  "script": "frappe.ui.form.on('Sales Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tafter_save: function(frm) {\n\t    console.log('rrrrrrr')\n        frm.doc.taxes.forEach((row) =>{\n            console.log('--------------vv')\n            if (row.account_head === 'TDS Payable - A') {\n                console.log(row.tax_amount)\n                row.tax_amount = Math.round(row.tax_amount); // Rounds to nearest integer\n                row.total = Math.round(row.total);\n            }\n        })       \n    }\n})",
+  "name": "Sales invoice",
+  "script": "frappe.ui.form.on('Sales Invoice', {\n    refresh: function (frm) {\n        // This function will run when the form is refreshed\n        // You can initialize or manipulate fields here if needed\n    },\n    onload: function (frm) {\n        \n    },\n    custom_sales_type : function (frm) {\n        if(frm.doc.custom_sales_type==\"Labour Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"LB\");\n        }\n        else if(frm.doc.custom_sales_type==\"On Approval\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"OAI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Rent Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"RB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Invoice\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n        else if(frm.doc.custom_sales_type==\"Hallmark Issue\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"HI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Debit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SDN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Credit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SCN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Issue Voucher\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IV\");\n        }\n        else if(frm.doc.custom_sales_type==\"Delivery Challan\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"DC\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n    }\n});\nfrappe.ui.form.on('Sales Invoice', {\n    before_save: function(frm) {\n        if (frm.doc.custom_sales_type==\"On Approval\" || frm.doc.custom_sales_type==\"Issue Voucher\" || frm.doc.custom_sales_type==\"Hallmark Issue\" || frm.doc.custom_sales_type==\"Delivery Challan\") {\n            // Remove TCS related fields if the condition is not met\n            frm.doc.tcs_amount = 0;\n            frm.doc.tcs_rate = 0;\n            frm.refresh_fields(); // Refresh the form to apply changes\n        }\n        if(frm.doc.custom_sales_type==\"Labour Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"LB\");\n        }\n        else if(frm.doc.custom_sales_type==\"On Approval\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"OAI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Rent Bill\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"RB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Invoice\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IB\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n        else if(frm.doc.custom_sales_type==\"Hallmark Issue\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"HI\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Debit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SDN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Sales Credit Note\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"SCN\");\n        }\n        else if(frm.doc.custom_sales_type==\"Issue Voucher\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"IV\");\n        }\n        else if(frm.doc.custom_sales_type==\"Delivery Challan\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"DC\");\n        }\n        else if(frm.doc.custom_sales_type==\"Bill Heading\") {\n            frm.set_value(\"custom_sales_type_prefix\", \"BH\");\n        }\n    },\n});\nfrappe.ui.form.on('Sales Invoice', {\n    refresh(frm) {\n        setTimeout(() => {\n            frm.remove_custom_button('Quality Inspection(s)', 'Create');\n            frm.remove_custom_button('Fetch Timesheet');\n            }, 10);\n    }\n});\nfrappe.ui.form.on(\"Sales Invoice\", \"validate\", function(frm) {\n    cur_frm.set_value(\"custom_created_by\", frm.doc.owner);\n});\n\nfrappe.ui.form.on('Sales Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t\tfrm.set_query(\"custom_sales_type\", function() {\n        return {\n            \"filters\": {\n                \"custom_sales\": 1,\n            }\n        };\n    });\n\t}\n})\n\n\n\n\n\n\n\n\n\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Purchase Invoice",
+  "enabled": 1,
+  "modified": "2025-02-26 12:12:28.623224",
+  "module": "Ascra Billing",
+  "name": "Purchase Invoice",
+  "script": "frappe.ui.form.on('Purchase Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t\tfrm.set_query(\"custom_sales_type\", function() {\n        return {\n            \"filters\": {\n                \"custom_purchase\": 1,\n            }\n        };\n    });\n\t}\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Issue Voucher",
+  "enabled": 1,
+  "modified": "2025-02-26 12:12:43.494570",
+  "module": "Ascra Billing",
+  "name": "Sales issue Voucher Filter Script",
+  "script": "frappe.ui.form.on('Sales Issue Voucher', {\n\trefresh(frm) {\n\t\t// your code here\n\t\tfrm.set_query(\"voucher_billing_dept_cat_type\", function () {\n            return {\n                filters: {\n                    'custom_sales': ['=', '1'],\n                },\n            };\n        });\n\t}\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Receipt Voucher",
+  "enabled": 1,
+  "modified": "2025-02-26 12:12:56.263696",
+  "module": "Ascra Billing",
+  "name": "Sales Receipt Voucher",
+  "script": "frappe.ui.form.on('Sales Receipt Voucher', {\n    refresh(frm) {\n        frm.set_query(\"voucher_billing_dept_cat_type\", function() {\n            return {\n                filters: {\n                    custom_purchase: 1 // Use 1 instead of true if it's an Int field\n                }\n            };\n        });\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Invoice",
+  "enabled": 1,
+  "modified": "2025-02-26 12:13:10.837980",
+  "module": "Ascra Billing",
+  "name": "sales invoice v2",
+  "script": "frappe.ui.form.on('Sales Invoice', {\n    onload: function(frm) {\n        initial_tax_setup(frm);\n    },\n    refresh: function(frm) {\n       if (frm.doc.docstatus === 0) {\n         initial_tax_setup(frm);\n       }\n    },\n    items_add: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    items_remove: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    item_code: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    qty: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    rate: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    tax_category: function(frm) {\n        trigger_tax_recalculation(frm);\n    },\n    taxes_and_charges: function(frm) {\n        trigger_tax_recalculation(frm);\n    },\n    validate: function(frm) {\n        trigger_tax_recalculation(frm);\n        \n        //Always calculate before final save\n    }\n});\n\nfunction initial_tax_setup(frm) {\n    if (frm.doc.taxes_and_charges &&\n        frm.doc.items && frm.doc.items.length > 0 &&\n        (!frm.doc.taxes || frm.doc.taxes.length === 0) && frm.doc.docstatus === 0) {\n\n        let current_template = frm.doc.taxes_and_charges;\n        frm.set_value(\"taxes_and_charges\", \"\")\n            .then(() => {\n                frm.set_value(\"taxes_and_charges\", current_template);\n            });\n    }\n}\n\nfunction trigger_tax_recalculation(frm) {\n    if (!frm.doc.taxes_and_charges || !frm.doc.items || frm.doc.items.length === 0) {\n        return;\n    }\n\n    if (frm.doc.docstatus != 0) {\n        return;\n    }\n\n    // Correct Method Path:\n \n}\n\nfrappe.ui.form.on('Sales Invoice Item', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tcustom_item:function(frm){\n\t    initial_tax_setup(frm)\n\t}\n})",
   "view": "Form"
  },
  {
@@ -48,7 +81,7 @@
   "doctype": "Client Script",
   "dt": "Follow-Up",
   "enabled": 1,
-  "modified": "2025-02-25 18:47:41.244162",
+  "modified": "2025-02-26 12:13:45.789387",
   "module": null,
   "name": "Follow-Up",
   "script": "frappe.listview_settings['Follow-Up'] = { // And other doctype names\n    hide_name_column: true\n}",
@@ -59,10 +92,10 @@
   "doctype": "Client Script",
   "dt": "Sales Invoice",
   "enabled": 1,
-  "modified": "2025-02-25 18:47:55.491961",
+  "modified": "2025-02-26 12:13:57.601069",
   "module": "Ascra Billing",
-  "name": "sales invoice v2",
-  "script": "frappe.ui.form.on('Sales Invoice', {\n    onload: function(frm) {\n        initial_tax_setup(frm);\n    },\n    refresh: function(frm) {\n       if (frm.doc.docstatus === 0) {\n         initial_tax_setup(frm);\n       }\n    },\n    items_add: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    items_remove: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    item_code: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    qty: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    rate: function(frm, cdt, cdn) {\n        trigger_tax_recalculation(frm);\n    },\n    tax_category: function(frm) {\n        trigger_tax_recalculation(frm);\n    },\n    taxes_and_charges: function(frm) {\n        trigger_tax_recalculation(frm);\n    },\n    validate: function(frm) {\n        trigger_tax_recalculation(frm);\n        \n        //Always calculate before final save\n    }\n});\n\nfunction initial_tax_setup(frm) {\n    if (frm.doc.taxes_and_charges &&\n        frm.doc.items && frm.doc.items.length > 0 &&\n        (!frm.doc.taxes || frm.doc.taxes.length === 0) && frm.doc.docstatus === 0) {\n\n        let current_template = frm.doc.taxes_and_charges;\n        frm.set_value(\"taxes_and_charges\", \"\")\n            .then(() => {\n                frm.set_value(\"taxes_and_charges\", current_template);\n            });\n    }\n}\n\nfunction trigger_tax_recalculation(frm) {\n    if (!frm.doc.taxes_and_charges || !frm.doc.items || frm.doc.items.length === 0) {\n        return;\n    }\n\n    if (frm.doc.docstatus != 0) {\n        return;\n    }\n\n    // Correct Method Path:\n \n}\n\nfrappe.ui.form.on('Sales Invoice Item', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tcustom_item:function(frm){\n\t    initial_tax_setup(frm)\n\t}\n})",
+  "name": "tax round",
+  "script": "frappe.ui.form.on('Sales Invoice', {\n\trefresh(frm) {\n\t\t// your code here\n\t},\n\tafter_save: function(frm) {\n\t    console.log('rrrrrrr')\n        frm.doc.taxes.forEach((row) =>{\n            console.log('--------------vv')\n            if (row.account_head === 'TDS Payable - A') {\n                console.log(row.tax_amount)\n                row.tax_amount = Math.round(row.tax_amount); // Rounds to nearest integer\n                row.total = Math.round(row.total);\n            }\n        })       \n    }\n})",
   "view": "Form"
  }
 ]
