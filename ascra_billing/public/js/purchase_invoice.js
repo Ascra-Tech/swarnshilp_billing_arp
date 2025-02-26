@@ -60,7 +60,7 @@ frappe.ui.form.on('Purchase Invoice', {
                             let tds_rate = taxRates.length ? taxRates[0].tax_withholding_rate : 1;
 
 
-                            let tds_account = "TDS Payable - ATL";
+                            let tds_account = "TDS Payable - A";
                             let net_total = frm.doc.net_total || 0;
                             let tds_amount = (net_total * tds_rate) / 100;
 
@@ -153,13 +153,13 @@ function update_tcs_payable(frm) {
     if (frm.doc.custom_sales_type=="On Approval Receipt" || frm.doc.custom_sales_type=="Hallmark Receipt" || frm.doc.custom_sales_type=="Receipt Voucher" || frm.doc.custom_sales_type=="Order Memo") {
         frm.doc.taxes.forEach(function(tax) {
             // Check if the tax entry is TCS Payable
-            if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
+            if (tax.account_head === 'TDS Payable - A') {  // Ensure this matches the exact account name
                 // Set both rate and amount to 0
                 frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
                 frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
             }
             
-            if (tax.account_head === 'TCS Payable - ATL') {  // Ensure this matches the exact account name
+            if (tax.account_head === 'TCS Payable - A') {  // Ensure this matches the exact account name
                 // Set both rate and amount to 0
                 frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
                 frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);

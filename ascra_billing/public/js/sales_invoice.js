@@ -196,13 +196,13 @@ function update_tcs_payable(frm) {
     if (frm.doc.voucher_billing_dept_cat_type=="On Approval Issue" || frm.doc.voucher_billing_dept_cat_type=="Issue Voucher" || frm.doc.voucher_billing_dept_cat_type=="Hallmark Issue" || frm.doc.voucher_billing_dept_cat_type=="Delivery Challan") {
         frm.doc.taxes.forEach(function(tax) {
             // Check if the tax entry is TCS Payable
-            if (tax.account_head === 'TDS Payable - ATL') {  // Ensure this matches the exact account name
+            if (tax.account_head === 'TDS Payable - A') {  // Ensure this matches the exact account name
                 // Set both rate and amount to 0
                 frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
                 frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
             }
             
-            if (tax.account_head === 'TCS Payable - ATL') {  // Ensure this matches the exact account name
+            if (tax.account_head === 'TCS Payable - A') {  // Ensure this matches the exact account name
                 // Set both rate and amount to 0
                 frappe.model.set_value(tax.doctype, tax.name, 'rate', 0);
                 frappe.model.set_value(tax.doctype, tax.name, 'amount', 0);
