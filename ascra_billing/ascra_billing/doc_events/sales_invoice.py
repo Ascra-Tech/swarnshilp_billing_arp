@@ -91,7 +91,7 @@ def make_delivery_note(source_name, target_doc=None):
 		frappe.logger("utils").exception(source.custom_sales_issue_voucher)
 		if not check_labor_bill(source): return
 		if not source.custom_sales_issue_voucher: return
-
+		target.custom_sales_invoice = source.name
 		# target_doc.items = []
 		sales_issue_voucher_doc = frappe.get_doc("Sales Issue Voucher", source.custom_sales_issue_voucher)
 		sales_issue_voucher_doc.item_details.pop() # Remove the last Total Element
