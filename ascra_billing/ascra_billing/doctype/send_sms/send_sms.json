@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-21 19:36:14.179075",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "template",
+  "message",
+  "exclude_cashhead",
+  "inactive_days",
+  "mobile_number",
+  "account"
+ ],
+ "fields": [
+  {
+   "fieldname": "template",
+   "fieldtype": "Link",
+   "label": "Template",
+   "options": "SMS Template"
+  },
+  {
+   "fetch_from": "template.message",
+   "fieldname": "message",
+   "fieldtype": "Text",
+   "label": "Message"
+  },
+  {
+   "default": "0",
+   "fieldname": "exclude_cashhead",
+   "fieldtype": "Check",
+   "label": "Exclude CASHHEAD"
+  },
+  {
+   "fieldname": "inactive_days",
+   "fieldtype": "Select",
+   "label": "Inactive Days",
+   "options": "10\n20\n30\n50"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "account",
+   "fieldtype": "Table MultiSelect",
+   "label": "Account",
+   "options": "Send SMS Child"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-03-01 14:51:15.659987",
+ "modified_by": "Administrator",
+ "module": "Ascra Billing",
+ "name": "Send SMS",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
