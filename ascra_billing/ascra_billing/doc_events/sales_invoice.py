@@ -2,9 +2,12 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt
+from erpnext.controllers.taxes_and_totals import calculate_taxes_and_totals
+from erpnext.controllers.taxes_and_totals import get_round_off_applicable_accounts,get_itemised_tax_breakup_html
 
 
 def before_save(doc, method):
+	validate(doc, method)
 	excluded_keywords = ["making charges", "makingcharges"]
 	total_qty = 0
 	total_amount = 0
@@ -20,9 +23,25 @@ def before_save(doc, method):
 	custom_calculate_taxes(doc, method)
 
 
-import frappe
-from erpnext.controllers.taxes_and_totals import calculate_taxes_and_totals
-from erpnext.controllers.taxes_and_totals import get_round_off_applicable_accounts,get_itemised_tax_breakup_html
+def validate(doc, method):
+    customer_balance = get_customer_balance(doc.customer)
+
+    invoice_total = doc.grand_total
+
+    if customer_balance < invoice_total:
+        frappe.throw(f"Insufficient balance. Customer has only {customer_balance}, but invoice total is {invoice_total}.")
+
+def get_customer_balance(customer):
+    balance = frappe.db.sql("""
+        SELECT SUM(debit) - SUM(credit) 
+        FROM `tabGL Entry`
+        WHERE party=%s AND party_type='Customer'
+    """, (customer,))
+
+    return balance[0][0] if balance and balance[0][0] else 0
+
+
+
 
 def custom_calculate_taxes(doc, method):
 
@@ -36,44 +55,6 @@ def custom_calculate_taxes(doc, method):
 				doc.total_taxes_and_charges -= row.tax_amount
 
 
-	# tds and tcs calculation code
-
-	''' 'issue approval','issue','hm issue','delivery challan','receipt approval','hm receipt','receipt','order memo' '''
-
-	# bill_type = [
-	#     'Issue Approval', 'Issue', 'Hm Issue', 'Delivery Challan', 
-	#     'Receipt Approval', 'Hm Receipt', 'Receipt', 'Order Memo', 'Labour Bill'
-	# ]
-		
-	# total_amount = sum(row.amount for row in doc.items)
-
-	# company_pan = 'AAPCS1960H'
-	# customer_pan = frappe.db.get_value("Customer", {"name": doc.customer}, 'pan')
-	# custom_tax_type = frappe.get_value("Customer",{"name" : doc.customer},'custom_tax_type') 
-
-	# # Assign TDS only if customer PAN is different from company PAN
-	# if customer_pan and customer_pan != company_pan:
-	# 	if doc.custom_sales_type == "Labour Bill":
-	# 		if custom_tax_type == "TDS":
-	# 			doc.custom_tds_amount = total_amount * 0.02  # 2%
-	# 			doc.custom_tcs_amount = 0.0
-	# 		elif custom_tax_type == "TCS":
-	# 			doc.custom_tcs_amount = doc.grand_total * 0.001 # 0.1%
-	# 			total = doc.grand_total + doc.custom_tcs_amount
-	# 			doc.grand_total = total
-	# 			doc.custom_tds_amount = 0.0
-	# 	elif doc.custom_sales_type not in bill_type:
-	# 		if custom_tax_type == "TDS":
-	# 			doc.custom_tds_amount = total_amount * 0.001  # 0.1%
-	# 			doc.custom_tcs_amount = 0.0
-	# 		elif custom_tax_type == "TCS":
-	# 			doc.custom_tcs_amount = doc.grand_total * 0.001 # 0.1%
-	# 			total = doc.grand_total + doc.custom_tcs_amount
-	# 			doc.grand_total = total
-	# 			doc.custom_tds_amount = 0.0
-
-	# else:
-	# 	doc.custom_tds_amount = 0
 
 
 

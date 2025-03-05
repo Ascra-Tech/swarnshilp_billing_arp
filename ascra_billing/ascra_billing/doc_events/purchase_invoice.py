@@ -13,6 +13,9 @@ def before_save(self, method):
 	if self.custom_roundup_total == 1 :
 		self.grand_total = round(self.grand_total)
 
+
+
+
 # ascra_billing.ascra_billing.doc_events.sales_invoice.make_delivery_note
 
 # @frappe.whitelist()
@@ -164,12 +167,33 @@ def get_item_details(company=None, item_code = None):
 
 @frappe.whitelist()
 def validate_account_block_status(doc, method):
-    supplier = doc.supplier
-    
-    if supplier:
-        supplier_doc = frappe.get_doc("Supplier", supplier)
-        if supplier_doc.custom_block_account :
-            frappe.throw(f"Cannot save Purchase Invoice. Customer '{supplier}' is blocked ('{supplier_doc.custom_reason}')")
+	validates(doc, method)
+	supplier = doc.supplier
+
+	if supplier:
+		supplier_doc = frappe.get_doc("Supplier", supplier)
+		if supplier_doc.custom_block_account :
+			frappe.throw(f"Cannot save Purchase Invoice. Customer '{supplier}' is blocked ('{supplier_doc.custom_reason}')")
+
+
+def validates(doc, method):
+	supplier_balance = get_customer_balance(doc.supplier)
+
+	invoice_total = doc.grand_total
+
+	if supplier_balance < invoice_total:
+		frappe.throw(f"Insufficient balance. Supplier has only {supplier_balance}, but invoice total is {invoice_total}.")
+
+def get_customer_balance(supplier):
+	balance = frappe.db.sql("""
+	    SELECT SUM(debit) - SUM(credit) 
+	    FROM `tabGL Entry`
+	    WHERE party=%s AND party_type='Supplier'
+	""", (supplier,))
+
+	return balance[0][0] if balance and balance[0][0] else 0
+
+
 
 @frappe.whitelist()
 def fetch_bill_types():
