@@ -167,7 +167,7 @@ def get_item_details(company=None, item_code = None):
 
 @frappe.whitelist()
 def validate_account_block_status(doc, method):
-	validates(doc, method)
+	# validates(doc, method)
 	supplier = doc.supplier
 
 	if supplier:
