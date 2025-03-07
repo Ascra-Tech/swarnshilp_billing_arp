@@ -7,7 +7,7 @@ from erpnext.controllers.taxes_and_totals import get_round_off_applicable_accoun
 
 
 def before_save(doc, method):
-	validate(doc, method)
+	# validate(doc, method)
 	excluded_keywords = ["making charges", "makingcharges"]
 	total_qty = 0
 	total_amount = 0
